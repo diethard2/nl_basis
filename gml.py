@@ -42,7 +42,11 @@ class MultiPolygon:
 
     def as_wkt(self):
         wkt = "MultiPolygon("
+        count_polygon = 0
         for a_polygon in self.polygons:
+            count_polygon += 1
+            if count_polygon > 1:
+                wkt += ","
             wkt += a_polygon.wkt_rings()
         wkt += ")"
         return wkt
@@ -107,6 +111,6 @@ class Polygon:
         notation for polygon"""
         wkt = "((" + wkt_coords_from_gml(self.exterior_ring) + ")"
         for int_ring in self.interior_rings:
-            wkt += "(" + wkt_coords_from_gml(int_ring) + ")"
+            wkt += ",(" + wkt_coords_from_gml(int_ring) + ")"
         wkt += ")"
         return wkt

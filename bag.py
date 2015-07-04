@@ -58,7 +58,9 @@ class Woonplaats(Basis):
 
     def as_sql(self):
         sql = "INSERT INTO woonplaats (id, naam, geometry) \
-VALUES (%s, '%s', GeomFromText('%s', 28992))" % (self.id, self.naam, self.geometry)
+VALUES (%s, '%s', GeomFromText('%s', 28992))" % (self.id,
+                                                 self.as_sql_string(self.naam),
+                                                 self.geometry)
         return sql
 
 

@@ -23,6 +23,9 @@ class Basis(object):
         
     def set_naam(self, value):
         self.naam = value
+
+    def as_sql_string(self, value):
+        return value.replace("'", "''")
         
     def set_geometry(self, value):
         self.geometry = value
