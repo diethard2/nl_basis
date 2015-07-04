@@ -1,0 +1,6 @@
+De tabel gemeente is afgeleid van tabel 33 wat een officiele overheidstabel
+betreft waarnaar verwezen wordt in de gemeente woonplaatsen relatie tabel
+(GEM_WPL_REL). Uit die tabel zijn alleen de huidige gemeentes gefiltert,
+wanneer deze een nieuwe code bevat dan betreft het een gemeente die niet
+meer bestaat door een gemeentelijke herindeling.
+
