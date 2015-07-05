@@ -113,7 +113,58 @@ GeomFromText('MultiPolygon(((180001.576 580918.246, \
 
 _suite_woonplaats2 = unittest.TestLoader().loadTestsFromTestCase(WoonplaatsMultipolygonTestCase)
 
-unit_test_suites = [_suite_woonplaats1, _suite_woonplaats2]
+class PandTestCase(unittest.TestCase):
+    """
+    Unittest to test Pand
+
+    Run test from commandline in folder with code with following statement:
+    python test_bag.py
+    """
+    def setUp(self):
+        """
+        For each test create the Pand read from xml file pand.xml
+
+        The geometry actually consists of an gml polygon element which includes
+        an outer and inner ring.
+        """
+        xml_file = open("test/pand.xml")
+        root = ET.fromstring(xml_file.read())
+        xml_pand = find_xml_with_tag(root, "Pand", None)
+        self.pand = bag.Pand(xml_pand)
+        xml_file.close()        
+
+    def test_id(self):
+        self.assertEqual(self.pand.id, '1987100000011601')
+
+    def test_bouwjaar(self):
+        self.assertEqual(self.pand.bouwjaar, '2012')
+
+    def test_status(self):
+        self.assertEqual(self.pand.status, "Pand in gebruik")
+
+    def test_header(self):
+        self.assertEqual(self.pand.csv_header, 'id;bouwjaar;status;geometry')
+
+    def test_as_csv(self):
+        self.assertEqual(self.pand.as_csv(),
+                         '1987100000011601;2012;Pand in gebruik;\
+Polygon((253680.97 576716.1, 253679.11 576736.32, 253667.39 576735.3, \
+253669.21 576715.11, 253680.97 576716.1),(253679.875 576724.723, \
+253671.753 576723.992, 253671.406 576727.849, 253679.528 576728.58, \
+253679.875 576724.723))')
+
+    def test_as_sql(self):
+        self.assertEqual(self.pand.as_sql(),
+                         "INSERT INTO pand \
+(id, bouwjaar, status, geometry) VALUES ('1987100000011601', \
+'2012', 'Pand in gebruik', GeomFromText('Polygon((253680.97 576716.1, \
+253679.11 576736.32, 253667.39 576735.3, 253669.21 576715.11, \
+253680.97 576716.1),(253679.875 576724.723, 253671.753 576723.992, \
+253671.406 576727.849, 253679.528 576728.58, 253679.875 576724.723))', 28992))")
+
+_suite_pand = unittest.TestLoader().loadTestsFromTestCase(PandTestCase)
+
+unit_test_suites = [_suite_woonplaats1, _suite_woonplaats2, _suite_pand]
 
 def main():
     bag_test_suite = unittest.TestSuite(unit_test_suites)

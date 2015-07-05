@@ -37,7 +37,8 @@ class FillDB:
         self._tag2process = {"producten": self._process_xml_element,
                              "LVC-product": self._process_LVC_product}
         self._tag = None
-        self.TAG_BAG_OBJECTS = {"Woonplaats": bag.Woonplaats}
+        self.TAG_BAG_OBJECTS = {"Woonplaats": bag.Woonplaats,
+                                "Pand": bag.Pand}
 
     def run(self):
         self._conn = dbapi2.connect(self.db)

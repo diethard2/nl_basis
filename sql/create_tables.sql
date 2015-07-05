@@ -12,6 +12,19 @@ CREATE TABLE woonplaats
 --
 SELECT AddGeometryColumn('woonplaats', 'geometry', 28992, 'MULTIPOLYGON', 'XY')
 --
+SELECT CreateSpatialIndex('woonplaats', 'geometry')
+--
+DROP TABLE if exists pand
+--
+CREATE TABLE pand
+    (id TEXT NOT NULL PRIMARY KEY,
+     bouwjaar TEXT NOT NULL,
+     status TEXT NOT NULL)
+--
+SELECT AddGeometryColumn('pand', 'geometry', 28992, 'POLYGON', 'XY')
+--
+SELECT CreateSpatialIndex('pand', 'geometry')
+--
 DROP TABLE if exists gem_wpl_rel
 --
 CREATE TABLE gem_wpl_rel

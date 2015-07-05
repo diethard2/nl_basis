@@ -50,11 +50,9 @@ class Woonplaats(object):
             tag = clean_tag(i_elem.tag)
             if tag == "identificatie":
                 self.id = i_elem.text
-                continue
-            if tag == "woonplaatsNaam":
+            elif tag == "woonplaatsNaam":
                 self.naam = i_elem.text
-                continue 
-            if tag == "woonplaatsGeometrie":
+            elif tag == "woonplaatsGeometrie":
                 self.geometry = gml.MultiPolygon(i_elem).as_wkt()
                 
     def as_csv(self):
@@ -94,23 +92,43 @@ VALUES ('%04d', '%s', GeomFromText('%s', \
 class Pand:
 
     # kopregel van een in  een csv-bestand
-    header = 'id;naam;geometry'
+    csv_header = 'id;bouwjaar;status;geometry'
 
     def __init__(self, xml_element):
         """Pand(elem), xml_element = xml-tree die alle informatie bevat
         om een object Pand aan te maken en te vullen.
         """
-        self.id = 0
+        self.id = ""
+        self.bouwjaar = ""
+        self.status = ""
+        self.geometry = ""
+        self._process(xml_element)
 
+    def _process(self, xml_element):
+        """Vult de eigenschappen vanuit het xml_element.
+        """
+        for i_elem in xml_element:
+            tag = clean_tag(i_elem.tag)
+            if tag == "identificatie":
+                self.id = i_elem.text
+            elif tag == "bouwjaar":
+                self.bouwjaar = i_elem.text
+            elif tag == "pandstatus":
+                self.status = i_elem.text
+            elif tag == "pandGeometrie":
+                self.geometry = gml.Polygon(i_elem).as_wkt()
+                
     def as_csv(self):
-        a_list = ['%04d' % self.id,
-                  self.naam, self.geom_wkt]
-        return ";".join(a_list)
+        attributes = [self.id, self.bouwjaar, self.status, self.geometry]
+        return ";".join(attributes)
 
     def as_sql(self):
-        sql = "INSERT INTO  (id, naam, geom) \
-VALUES ('%04d', '%s', GeomFromText('%s', \
-28992))" % (self.id, self.naam, self.geom_wkt)
+        sql = "INSERT INTO pand (id, bouwjaar, status, geometry) \
+VALUES ('%s', '%s', '%s', GeomFromText('%s', 28992))" % (self.id,
+                                                         self.bouwjaar,
+                                                         self.status,
+                                                         self.geometry)
+        return sql
 
 
 class Verblijfsobject:
