@@ -16,13 +16,13 @@ email                : diethard.jansen at gmail.com
  *                                                                         *
  ***************************************************************************/
 '''
-import os
+import os, zipfile, re
 from xml_utils import clean_tag
+from cStringIO import StringIO
 import xml.etree.cElementTree as ET
 from pyspatialite import dbapi2
 import codecs
 import bag
-
 
 class FillDB:
     
@@ -46,6 +46,8 @@ class FillDB:
             for name in files:
                 if 'Tabel33' in name:
                     self.process_gemeententabel(root, name)
+                elif name == 'inspireadressen.zip':
+                    self.process_bag_zipfile(root, name)
                 else:
                     self.process_xml_file(root, name)
         self._conn.close()
@@ -80,6 +82,34 @@ class FillDB:
                       (gemeentecode, name)
                 self._cur.execute(sql)
         self._conn.commit()
+
+    def process_bag_zipfile(self, root, name):
+        zip_file = self._file_from(root, name)
+        self._process_zip_in_zip(zip_file)
+                        
+    def _process_zip_in_zip(self, zip_file):
+        with zipfile.ZipFile(zip_file, "r") as zfile:
+            for name in zfile.namelist():
+                if re.search(r'\.zip$', name) != None:
+                    # We have a zip within a zip
+                    print "Found zipped zipfile: " + name
+                    zfiledata = StringIO(zfile.read(name))
+                    self._process_xmls_in_zip(zfiledata)
+
+    def _process_xmls_in_zip(self, zfiledata):
+        with zipfile.ZipFile(zfiledata) as zfile:
+            for file_name in zfile.namelist():
+                if re.search(r'\.xml$', file_name) != None:
+                    # We have an xml in a zip within a zip
+                    xml_file = zfile.open(file_name)
+                    self._process_zipped_xml_file(xml_file)
+                 
+    def _process_zipped_xml_file(self, xml_file):
+        # read the xml file and process Bag Compact addresses
+##        print "Verwerk bestand: " + xml_file
+        self._root = ET.fromstring(xml_file.read())
+        for i_elem in self._root:
+            self._process_xml_element(i_elem)
         
     def process_xml_file(self, root, name):
         # read the xml file and process Bag Compact addresses
