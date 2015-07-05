@@ -100,7 +100,42 @@ class MultiPolygonTestCase(unittest.TestCase):
 
 _suite_multipolygon = unittest.TestLoader().loadTestsFromTestCase(MultiPolygonTestCase)
 
-unit_test_suites = [_suite_polygon, _suite_multipolygon]
+class Polygon3DTestCase(unittest.TestCase):
+    """
+    First unittest to test Woonplaats
+
+    Run test from commandline in folder with code with following statement:
+    python test_bag.py
+    """
+    def setUp(self):
+        """
+        For each test create the Woonplaats read from xml file woonplaats.xml
+
+        The geometry actually consists of an gml polygon element which includes
+        an outer and inner ring.
+        """
+        xml_file = open("test/pand.xml")
+        root = ET.fromstring(xml_file.read())
+        self.xml_geometry = find_xml_with_tag(root, "pandGeometrie", None)
+        self.polygon = gml.Polygon(self.xml_geometry)
+        xml_file.close()        
+
+    def test_wkt_rings(self):
+        self.assertEqual(self.polygon.wkt_rings(), '((253680.97 576716.1, \
+253679.11 576736.32, 253667.39 576735.3, 253669.21 576715.11, \
+253680.97 576716.1),(253679.875 576724.723, 253671.753 576723.992, \
+253671.406 576727.849, 253679.528 576728.58, 253679.875 576724.723))')
+
+    def test_as_wkt(self):
+        self.assertEqual(self.polygon.as_wkt(),
+                         'Polygon((253680.97 576716.1, \
+253679.11 576736.32, 253667.39 576735.3, 253669.21 576715.11, \
+253680.97 576716.1),(253679.875 576724.723, 253671.753 576723.992, \
+253671.406 576727.849, 253679.528 576728.58, 253679.875 576724.723))')
+
+_suite_polygon3d = unittest.TestLoader().loadTestsFromTestCase(Polygon3DTestCase)
+
+unit_test_suites = [_suite_polygon, _suite_multipolygon, _suite_polygon3d]
 
 def main():
     gml_test_suite = unittest.TestSuite(unit_test_suites)

@@ -97,9 +97,35 @@ class Polygon:
             tag = clean_tag(i_elem.tag)
             if tag == "posList":
                 if exterior == True:
-                    self.exterior_ring = i_elem.text
+                    coords_text = self._text_poslist(i_elem)
+                    self.exterior_ring = coords_text
                 else:
-                    self.interior_rings.append(i_elem.text)
+                    coords_text = self._text_poslist(i_elem)
+                    self.interior_rings.append(coords_text)
+                    
+    def _text_poslist(self, elem):
+        if self._is_poslist_3d(elem):
+            return self._2d_from_3d_poslist(elem.text)
+        else:
+            return elem.text
+            
+    def _is_poslist_3d(self, elem):
+        is_3d = False
+        xml_attributes = elem.attrib
+        if xml_attributes.has_key('srsDimension'):
+            if xml_attributes['srsDimension'] == '3':
+                is_3d = True
+        return is_3d
+       
+    def _2d_from_3d_poslist(self, text):
+        xyz = text.split(' ')
+        xy = []
+        l_count = 0
+        for i_coord in xyz:
+            l_count += 1
+            if l_count % 3 > 0:
+                xy.append(i_coord)
+        return ' '.join(xy)
 
     def as_wkt(self):
         """Return valid geom in WKT notation for polygon"""
