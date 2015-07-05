@@ -23,12 +23,10 @@
  *                                                                         *
  ***************************************************************************/
 """
-from basis import Basis
 from xml_utils import clean_tag
 import gml
 
-
-class Woonplaats(Basis):
+class Woonplaats(object):
     """ Woonplaats is het object waarin gegevens tijdens verwerking worden
     opgeslagen en bevat functies om deze als csv of als sql weer terug te geven. 
     """
@@ -40,18 +38,25 @@ class Woonplaats(Basis):
         """Woonplaats(elem), xml_element = xml-tree die alle informatie bevat
         om een object Woonplaats aan te maken en te vullen.
         """
-        super(Basis, self).__init__()
-        
-        self.tag2process = {"identificatie": self._process_field,
-                            "woonplaatsNaam": self._process_field,
-                            "woonplaatsGeometrie": self._process_field}
-        self.tag2field = {"identificatie": self.set_id,
-                          "woonplaatsNaam": self.set_naam,
-                          "woonplaatsGeometrie": self.set_geometry}
-        self.tag2object = {"woonplaatsGeometrie": gml.MultiPolygon}
-
+        self.id = 0
+        self.naam = ""
+        self.geometry = "" # in WKT notation
         self._process(xml_element)
     
+    def _process(self, xml_element):
+        """Vult de eigenschappen vanuit het xml_element.
+        """
+        for i_elem in xml_element:
+            tag = clean_tag(i_elem.tag)
+            if tag == "identificatie":
+                self.id = i_elem.text
+                continue
+            if tag == "woonplaatsNaam":
+                self.naam = i_elem.text
+                continue 
+            if tag == "woonplaatsGeometrie":
+                self.geometry = gml.MultiPolygon(i_elem).as_wkt()
+                
     def as_csv(self):
         attributes = [self.id, self.naam, self.geometry]
         return ";".join(attributes)
@@ -59,7 +64,7 @@ class Woonplaats(Basis):
     def as_sql(self):
         sql = "INSERT INTO woonplaats (id, naam, geometry) \
 VALUES (%s, '%s', GeomFromText('%s', 28992))" % (self.id,
-                                                 self.as_sql_string(self.naam),
+                                                 self.naam.replace("'", "''"),
                                                  self.geometry)
         return sql
 

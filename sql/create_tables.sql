@@ -7,7 +7,7 @@ CREATE TABLE gemeente
 DROP TABLE if exists woonplaats
 --
 CREATE TABLE woonplaats
-    (id INTEGER NOT NULL,
+    (id INTEGER NOT NULL PRIMARY KEY,
      naam TEXT NOT NULL)
 --
 SELECT AddGeometryColumn('woonplaats', 'geometry', 28992, 'MULTIPOLYGON', 'XY')

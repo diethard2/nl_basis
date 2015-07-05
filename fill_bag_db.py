@@ -35,8 +35,7 @@ class db_fill:
         self._conn = None
         self._cur = None
         self._root = None
-        self.xml_item_count = 0
-        self.xml_object_count = 0
+        self._xml_object_count = 0
 
     def run(self):
         self._conn = dbapi2.connect(self.db)
@@ -90,7 +89,6 @@ class db_fill:
         
         for event, elem in an_iterator:
             if event == "end":
-                self.xml_item_count += 1
                 tag = clean_tag(elem.tag)
                 if tag == "antwoord":
                     self._process_antwoord(elem)
@@ -116,24 +114,15 @@ class db_fill:
                 bag_object_class = tag_bag_objects[tag]
                 bag_object = bag_object_class(i_elem)
                 sql = bag_object.as_sql()
-                self._cur.execute(sql)
-                self.xml_object_count += 1
+                try:
+                    self._cur.execute(sql)
+                except dbapi2.IntegrityError:
+                    # objects with unique ids are encountered more often in
+                    # xml files delivered. Just ignore..
+                    pass
+                self._xml_object_count += 1
                 i_elem.clear()
-                if self.xml_object_count % 100 is 0:
-                    self._root.clear()   
-
-##            if tag == "Woonplaats"
-##                sql = bag.Woonplaats(elem).as_sql()
-##                print sql
-##                self.xml_adres_count += 1
-##                elem.clear()
-##                if self.xml_adres_count % 100 is 0:
-##                    root.clear()      
-
-if __name__ == "__main__":
-    filler = db_fill("C:\\Users\\diethard\\Documents\\ontwikkeling\\bag\\test\\test.sqlite",
-                     "C:\\Users\\diethard\\Documents\\ontwikkeling\\bag\\bag_extract\\data\\test")
-    filler.run()        
-            
+                if self._xml_object_count % 100 is 0:
+                    self._root.clear()            
         
         
