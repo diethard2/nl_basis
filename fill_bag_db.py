@@ -24,9 +24,7 @@ import codecs
 import bag
 
 
-class db_fill:
-
-    TAG_BAG_OBJECTS = {"Woonplaats": bag.Woonplaats}
+class FillDB:
     
     def __init__(self, spatialite_db, p_dir):
         self.db = spatialite_db
@@ -36,6 +34,10 @@ class db_fill:
         self._cur = None
         self._root = None
         self._xml_object_count = 0
+        self._tag2process = {"producten": self._process_xml_element,
+                             "LVC-product": self._process_LVC_product}
+        self._tag = None
+        self.TAG_BAG_OBJECTS = {"Woonplaats": bag.Woonplaats}
 
     def run(self):
         self._conn = dbapi2.connect(self.db)
@@ -91,25 +93,22 @@ class db_fill:
             if event == "end":
                 tag = clean_tag(elem.tag)
                 if tag == "antwoord":
-                    self._process_antwoord(elem)
+                    self._process_xml_element(elem)
         self._conn.commit()
 
-    def _process_antwoord(self, elem):
-        for i_elem in elem:
-            tag = clean_tag(i_elem.tag)
-            if tag == "producten":
-                self._process_producten(i_elem)
+    def _process_xml_element(self, xml_element):
+        """Process an xml_element.
+        """
+        for i_elem in xml_element:
+            self._tag = clean_tag(i_elem.tag)
+            if self._tag2process.has_key(self._tag):
+                a_process = self._tag2process[self._tag]
+                a_process(i_elem)
 
-    def _process_producten(self, elem):
-        for i_elem in elem:
-            tag = clean_tag(i_elem.tag)
-            if tag == "LVC-product":
-                self._process_LVC_product(i_elem)
-    
     def _process_LVC_product(self, elem):
         for i_elem in elem:
             tag = clean_tag(i_elem.tag)
-            tag_bag_objects = db_fill.TAG_BAG_OBJECTS
+            tag_bag_objects = self.TAG_BAG_OBJECTS
             if tag_bag_objects.has_key(tag):
                 bag_object_class = tag_bag_objects[tag]
                 bag_object = bag_object_class(i_elem)

@@ -22,7 +22,7 @@ def fill_db():
     global new_db
     input_dir = "C:/data/bag/input"
     print "new_db ", new_db
-    filler = fill_bag_db.db_fill(new_db, input_dir)
+    filler = fill_bag_db.FillDB(new_db, input_dir)
     filler.run()
     time_end = time.clock()
     print "fill_db seconds used: " + str(time_end - time_start)
