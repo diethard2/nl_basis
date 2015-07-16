@@ -85,8 +85,8 @@ to get value frome")
         
     def set_value_from_xml(self, xml_element):
         """Convert contents of xml_element into field value."""
-        if self.tag2object[0] == clean_tag(xml_element.tag):
-            an_object = self.tag2object(1)
+        if len(self.tag2object) == 2 and self.tag2object[0] == clean_tag(xml_element.tag):
+            an_object = self.tag2object[1]
             self.value = an_object(xml_element).as_wkt()
         else:
             self.value = xml_element.text
@@ -120,12 +120,11 @@ class B_Object(object):
         # attributes
         self.name = name
         self.fields = []
-        self.tag2fields = {}
+        self.tag2field = {}
         # for caching variable
         self.tag = None
         self.tag2process = {}
-        self.tag2field = {}
-
+ 
     def add_field(self, tag, field):
         self.fields.append(field)
         self.tag2field[tag] = field
@@ -138,8 +137,13 @@ class B_Object(object):
             if self.tag2process.has_key(self.tag):
                 a_process = self.tag2process[self.tag]
                 a_process(i_elem)
+
+    def add_tags_to_process(self):
+        """indicate which tags should be processed how"""
+        for i_tag in self.tag2field.keys():
+            self.tag2process[i_tag] = self.process_field
             
-    def _process_field(self, xml_element):
+    def process_field(self, xml_element):
         """Convert contents of xml_element into field_value."""
         a_field = self.tag2field[self.tag]
         a_field.set_value_from_xml(xml_element)
@@ -180,8 +184,8 @@ class B_Object(object):
         sql_values = []
         for i_field in self.fields:
             field_names.append(i_field.name)
-            field_names.append(i_field.sql_value())
-        return names, sql_values            
+            sql_values.append(i_field.sql_value())
+        return field_names, sql_values            
 
     def csv_header(self):
         """Return the csv_header."""
@@ -216,7 +220,7 @@ class B_Object(object):
 
     def sql_create_table_statement(self):
         """Returns sql statement to create table in sql database."""
-        sql = "CREATE TABLE %s (" % self.naam
+        sql = "CREATE TABLE %s (" % self.name
         field_definitions = []
         for i_field in self.attribute_fields():
             field_definitions.append(i_field.sql_definition())
@@ -226,15 +230,13 @@ class B_Object(object):
     def sql_add_geometry_statement(self):
         """Returns sql statement to add a geometry column to sql table."""
         geom_field = self.geometry_field()
-        sql = "SELECT AddGeometryColumn('%swoonplaats', " % self.naam
+        sql = "SELECT AddGeometryColumn('%s', " % self.name
         sql += "'geometry', 28992, '%s', 'XY')" % geom_field.type
         return sql
 
     def sql_create_index_statement(self):
         """Returns sql statement to create spatial index."""
-        return "SELECT CreateSpatialIndex('%s', 'geometry')" % self.naam
-        
-        
+        return "SELECT CreateSpatialIndex('%s', 'geometry')" % self.name
 
     
         
