@@ -25,214 +25,104 @@
 """
 from xml_utils import clean_tag
 import gml
+from basis import *
 
-class Woonplaats(object):
+class Woonplaats(B_Object):
     """ Woonplaats is het object waarin gegevens tijdens verwerking worden
-    opgeslagen en bevat functies om deze als csv of als sql weer terug te geven. 
+    opgeslagen en bevat functies om deze als csv of als sql weer terug
+    te geven. 
     """
 
-    # kopregel van een woonplaats in een csv
-    csv_header = 'id;naam;geometry'
-
-    def __init__(self, xml_element):
-        """Woonplaats(elem), xml_element = xml-tree die alle informatie bevat
-        om een object Woonplaats aan te maken en te vullen.
+    def __init__(self):
+        """Woonplaats is een vlakobject die kan bestaan uit meerdere polygonen.
         """
-        self.id = 0
-        self.naam = ""
-        self.geometry = "" # in WKT notation
-        self._process(xml_element)
-    
-    def _process(self, xml_element):
-        """Vult de eigenschappen vanuit het xml_element.
-        """
-        for i_elem in xml_element:
-            tag = clean_tag(i_elem.tag)
-            if tag == "identificatie":
-                self.id = i_elem.text
-            elif tag == "woonplaatsNaam":
-                self.naam = i_elem.text
-            elif tag == "woonplaatsGeometrie":
-                self.geometry = gml.MultiPolygon(i_elem).as_wkt()
-                
-    def as_csv(self):
-        attributes = [self.id, self.naam, self.geometry]
-        return ";".join(attributes)
+        B_Object.__init__(self, "woonplaats")
+        self.add_field(B_Field("id", "INTEGER", "identificatie",
+                               is_key_field=True))
+        self.add_field(B_Field("naam", "TEXT", "woonplaatsNaam"))
+        self.add_field(B_Field("geometry", "MULTIPOLYGON",
+                               "woonplaatsGeometrie",
+                               to_object=gml.MultiPolygon))
 
-    def as_sql(self):
-        sql = "INSERT INTO woonplaats (id, naam, geometry) \
-VALUES (%s, '%s', GeomFromText('%s', 28992))" % (self.id,
-                                                 self.naam.replace("'", "''"),
-                                                 self.geometry)
-        return sql
-
-
-class OpenbareRuimte:
+class OpenbareRuimte(B_Object):
 
     # kopregel van een in  een csv-bestand
     header = 'id;naam;geometry'
 
-    def __init__(self, xml_element):
+    def __init__(self):
         """OpenbareRuimte(elem), xml_element = xml-tree die alle informatie bevat
         om een object OpenbareRuimte aan te maken en te vullen.
         """
-        self.id = 0
-
-    def as_csv(self):
-        a_list = ['%04d' % self.id,
-                  self.naam, self.geom_wkt]
-        return ";".join(a_list)
-
-    def as_sql(self):
-        sql = "INSERT INTO  (id, naam, geom) \
-VALUES ('%04d', '%s', GeomFromText('%s', \
-28992))" % (self.id, self.naam, self.geom_wkt)
-
+        B_Object.__init__(self, "openbare_ruimte")
+        self.add_field(B_Field("id", "TEXT", "identificatie",
+                               is_key_field=True))
 
 class Pand:
 
-    # kopregel van een in  een csv-bestand
-    csv_header = 'id;bouwjaar;status;geometry'
-
-    def __init__(self, xml_element):
+    def __init__(self):
         """Pand(elem), xml_element = xml-tree die alle informatie bevat
         om een object Pand aan te maken en te vullen.
         """
-        self.id = ""
-        self.bouwjaar = ""
-        self.status = ""
-        self.geometry = ""
-        self._process(xml_element)
-
-    def _process(self, xml_element):
-        """Vult de eigenschappen vanuit het xml_element.
-        """
-        for i_elem in xml_element:
-            tag = clean_tag(i_elem.tag)
-            if tag == "identificatie":
-                self.id = i_elem.text
-            elif tag == "bouwjaar":
-                self.bouwjaar = i_elem.text
-            elif tag == "pandstatus":
-                self.status = i_elem.text
-            elif tag == "pandGeometrie":
-                self.geometry = gml.Polygon(i_elem).as_wkt()
-                
-    def as_csv(self):
-        attributes = [self.id, self.bouwjaar, self.status, self.geometry]
-        return ";".join(attributes)
-
-    def as_sql(self):
-        sql = "INSERT INTO pand (id, bouwjaar, status, geometry) \
-VALUES ('%s', '%s', '%s', GeomFromText('%s', 28992))" % (self.id,
-                                                         self.bouwjaar,
-                                                         self.status,
-                                                         self.geometry)
-        return sql
-
+        B_Object.__init__(self, "pand")
+        self.add_field(B_Field("id", "TEXT", "identificatie",
+                               is_key_field=True))
+        self.add_field(B_Field("bouwjaar", "TEXT", "bouwjaar"))
+        self.add_field(B_Field("status", "TEXT", "pandstatus"))
+        self.add_field(B_Field("geometry", "POLYGON",
+                               "pandGeometrie",
+                               to_object=gml.Polygon))
 
 class Verblijfsobject:
 
-    # kopregel van een in  een csv-bestand
-    header = 'id;naam;geometry'
-
-    def __init__(self, xml_element):
+    def __init__(self):
         """Verblijfsobject(elem), xml_element = xml-tree die alle informatie bevat
         om een object Verblijfsobject aan te maken en te vullen.
         """
-        self.id = 0
+        B_Object.__init__(self, "verblijfsobject")
+        self.add_field(B_Field("id", "TEXT", "identificatie",
+                               is_key_field=True))
 
-    def as_csv(self):
-        a_list = ['%04d' % self.id,
-                  self.naam, self.geom_wkt]
-        return ";".join(a_list)
-
-    def as_sql(self):
-        sql = "INSERT INTO  (id, naam, geom) \
-VALUES ('%04d', '%s', GeomFromText('%s', \
-28992))" % (self.id, self.naam, self.geom_wkt)
 
 class Standplaats:
 
-    # kopregel van een in  een csv-bestand
-    header = 'id;naam;geometry'
-
-    def __init__(self, xml_element):
+    def __init__(self):
         """Standplaats(elem), xml_element = xml-tree die alle informatie bevat
         om een object Standplaats aan te maken en te vullen.
         """
-        self.id = 0
+        B_Object.__init__(self, "standplaats")
 
-    def as_csv(self):
-        a_list = ['%04d' % self.id,
-                  self.naam, self.geom_wkt]
-        return ";".join(a_list)
-
-    def as_sql(self):
-        sql = "INSERT INTO  (id, naam, geom) \
-VALUES ('%04d', '%s', GeomFromText('%s', \
-28992))" % (self.id, self.naam, self.geom_wkt)
+    def add_fields(self):
+        self.add_field(B_Field("id", "TEXT", "identificatie",
+                               is_key_field=True))
 
 class Ligplaats:
 
-    # kopregel van een in  een csv-bestand
-    header = 'id;naam;geometry'
-
-    def __init__(self, xml_element):
+    def __init__(self):
         """Ligplaats(elem), xml_element = xml-tree die alle informatie bevat
         om een object Ligplaats aan te maken en te vullen.
         """
-        self.id = 0
-
-    def as_csv(self):
-        a_list = ['%04d' % self.id,
-                  self.naam, self.geom_wkt]
-        return ";".join(a_list)
-
-    def as_sql(self):
-        sql = "INSERT INTO  (id, naam, geom) \
-VALUES ('%04d', '%s', GeomFromText('%s', \
-28992))" % (self.id, self.naam, self.geom_wkt)
+        B_Object.__init__(self, "ligplaats")
+        self.add_field(B_Field("id", "TEXT", "identificatie",
+                               is_key_field=True))
 
 class Nummer:
 
-    # kopregel van een in  een csv-bestand
-    header = 'id;naam;geometry'
-
-    def __init__(self, xml_element):
+    def __init__(self):
         """Nummer(elem), xml_element = xml-tree die alle informatie bevat
         om een object Nummer aan te maken en te vullen.
         """
-        self.id = 0
-
-    def as_csv(self):
-        a_list = ['%04d' % self.id,
-                  self.naam, self.geom_wkt]
-        return ";".join(a_list)
-
-    def as_sql(self):
-        sql = "INSERT INTO  (id, naam, geom) \
-VALUES ('%04d', '%s', GeomFromText('%s', \
-28992))" % (self.id, self.naam, self.geom_wkt)
+        B_Object.__init__(self, "nummer")
+        self.add_field(B_Field("id", "TEXT", "identificatie",
+                               is_key_field=True))
 
 class GemeenteWoonplaats:
 
-    # kopregel van een in  een csv-bestand
-    header = 'id;naam;geometry'
-
-    def __init__(self, xml_element):
+    def __init__(self):
         """GemeenteWoonplaats(elem), xml_element = xml-tree die alle informatie bevat
         om een object GemeenteWoonplaats aan te maken en te vullen.
         """
-        self.id = 0
+        B_Object.__init__(self, "gemeente_woonplaats")
+        self.add_field(B_Field("id", "TEXT", "identificatie",
+                               is_key_field=True))
 
-    def as_csv(self):
-        a_list = ['%04d' % self.id,
-                  self.naam, self.geom_wkt]
-        return ";".join(a_list)
-
-    def as_sql(self):
-        sql = "INSERT INTO  (id, naam, geom) \
-VALUES ('%04d', '%s', GeomFromText('%s', \
-28992))" % (self.id, self.naam, self.geom_wkt)
 
