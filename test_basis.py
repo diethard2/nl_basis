@@ -30,7 +30,7 @@ class B_FieldRegularTestCase(unittest.TestCase):
         """
         Setup a test create a regular B_Field.
         """
-        self.field = basis.B_Field("naam", "TEXT")
+        self.field = basis.B_Field("naam", "TEXT", "woonplaatsNaam")
 
     def test_field_name(self):
         self.assertEqual(self.field.name, "naam")
@@ -44,12 +44,15 @@ class B_FieldRegularTestCase(unittest.TestCase):
     def test_is_key_field(self):
         self.assertEqual(self.field.is_key_field, False)
         
-    def test_is_tag2object(self):
-        self.assertEqual(self.field.tag2object, ())
+    def test_from_tag(self):
+        self.assertEqual(self.field.from_tag, "woonplaatsNaam")
+
+    def test_to_object(self):
+        self.assertEqual(self.field.to_object, None)
 
     def test_set_value(self):
-        self.field.value = "Nico"
-        self.assertEqual(self.field.value, "Nico")
+        self.field.value = "'s Hertogenbosch"
+        self.assertEqual(self.field.value, "'s Hertogenbosch")
         
     def test_sql_value(self):
         self.field.value = "'s Hertogenbosch"
@@ -69,11 +72,12 @@ class B_FieldSpecialTestCase(unittest.TestCase):
     """
 
     def test_is_key_field(self):
-        field = basis.B_Field("id", "INTEGER", is_key_field=True)
+        field = basis.B_Field("id", "INTEGER", "identificatie",
+                              is_key_field=True)
         self.assertEqual(field.is_key_field, True)
         
     def test_integer_value_as_sql(self):
-        field = basis.B_Field("nr", "INTEGER")
+        field = basis.B_Field("nr", "INTEGER", "nummer")
         field.value = "20"
         self.assertEqual(field.sql_value(), '20')        
 
@@ -81,12 +85,13 @@ class B_FieldSpecialTestCase(unittest.TestCase):
         """
         Test a created key field.
         """
-        field = basis.B_Field("id", "INTEGER", is_key_field=True)
+        field = basis.B_Field("id", "INTEGER", "identificatie",
+                              is_key_field=True)
         self.assertEqual(field.sql_definition(),
                          'id INTEGER NOT NULL PRIMARY KEY')
 
     def test_is_geometry(self):
-        field = basis.B_Field("geometry", "MULTIPOLYGON")
+        field = basis.B_Field("geometry", "MULTIPOLYGON", "woonplaatsGeometrie")
         self.assertEqual(field.is_geometry(), True)
 
 
@@ -107,14 +112,14 @@ class B_ObjectTestCase(unittest.TestCase):
         """
         woonplaats = basis.B_Object("woonplaats")
         # to be included in init of derived classes, adding fields..
-        field_id = basis.B_Field("id", "INTEGER", is_key_field=True)
-        woonplaats.add_field("identificatie", field_id)
-        field_name = basis.B_Field("naam", "TEXT")
-        woonplaats.add_field("woonplaatsNaam", field_name)
+        field_id = basis.B_Field("id", "INTEGER", "identificatie",
+                                 is_key_field=True)
+        woonplaats.add_field(field_id)
+        field_name = basis.B_Field("naam", "TEXT", "woonplaatsNaam")
+        woonplaats.add_field(field_name)
         field_geometry = basis.B_Field("geometry", "MULTIPOLYGON",
-                                       tag2object=("woonplaatsGeometrie",
-                                                   gml.MultiPolygon))
-        woonplaats.add_field("woonplaatsGeometrie", field_geometry)
+                                       "woonplaatsGeometrie", gml.MultiPolygon)
+        woonplaats.add_field(field_geometry)
         # include also how to process each tag found for object..
         # after creation.. (i.e. using method add_tags_to_process())
         woonplaats.add_tags_to_process()
@@ -203,6 +208,3 @@ def main():
         
 if __name__ == "__main__":
     main()
-    
-
-        

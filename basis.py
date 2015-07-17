@@ -8,8 +8,8 @@ class B_Field(object):
     ALL_TYPES = GEOMETRY_TYPES + ("TEXT", "INTEGER", "REAL")
 
 
-    def __init__(self, field_name, field_type, is_mandatory=True,
-                 is_key_field=False, tag2object=()):
+    def __init__(self, field_name, field_type, from_tag, to_object=None, is_mandatory=True,
+                 is_key_field=False):
         """create field object
 
         name: is name used in target table or CSV header
@@ -23,14 +23,15 @@ class B_Field(object):
         """
         self.__name = field_name
         self.__type = None
+        self.__from_tag = from_tag        
+        # set field value using object.. i.e. gml polygon -> wkt geometry
+        self.__to_object = to_object
         self.__is_mandatory = is_mandatory
         self.__is_key_field = is_key_field
-        # set field type using object.. i.e. gml polygon -> wkt geometry
-        self.__tag2object = tag2object
         self.__sql_template = None
+        self.__value = None
         # set type using property set function, will also set __sql_template!
         self.type = field_type
-        self.__value = None
 
     def _name(self):
         return self.__name
@@ -68,11 +69,17 @@ class B_Field(object):
     is_mandatory = property(fget=_is_mandatory,
                     doc="Is this a mandatory field --> boolean")
 
-    def _tag2object(self):
-        return self.__tag2object
+    def _from_tag(self):
+        return self.__from_tag
 
-    tag2object = property(fget=_tag2object,
-                          doc="tag2object is object that needs to be created \
+    from_tag = property(fget=_from_tag,
+                        doc="tag found in xml to create field from")
+
+    def _to_object(self):
+        return self.__to_object
+
+    to_object = property(fget=_to_object,
+                          doc="object that needs to be created \
 to get value frome")
 
     def _set_sql_template(self):
@@ -85,11 +92,11 @@ to get value frome")
         
     def set_value_from_xml(self, xml_element):
         """Convert contents of xml_element into field value."""
-        if len(self.tag2object) == 2 and self.tag2object[0] == clean_tag(xml_element.tag):
-            an_object = self.tag2object[1]
-            self.value = an_object(xml_element).as_wkt()
-        else:
+        if self.to_object is None:
             self.value = xml_element.text
+        else:
+            if self.from_tag == clean_tag(xml_element.tag):
+                self.value = self.to_object(xml_element).as_wkt()
             
     def sql_value(self):
         value = self.value
@@ -125,9 +132,9 @@ class B_Object(object):
         self.tag = None
         self.tag2process = {}
  
-    def add_field(self, tag, field):
+    def add_field(self, field):
         self.fields.append(field)
-        self.tag2field[tag] = field
+        self.tag2field[field.from_tag] = field
 
     def process(self, xml_element):
         """Process an incoming xml_element describing a basis object
