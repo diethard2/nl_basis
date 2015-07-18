@@ -23,106 +23,81 @@
  *                                                                         *
  ***************************************************************************/
 """
-from xml_utils import clean_tag
 import gml
 from basis import *
 
-class Woonplaats(B_Object):
-    """ Woonplaats is het object waarin gegevens tijdens verwerking worden
-    opgeslagen en bevat functies om deze als csv of als sql weer terug
-    te geven. 
-    """
 
-    def __init__(self):
-        """Woonplaats is een vlakobject die kan bestaan uit meerdere polygonen.
-        """
-        B_Object.__init__(self, "woonplaats")
-        self.add_field(B_Field("id", "INTEGER", "identificatie",
-                               is_key_field=True))
-        self.add_field(B_Field("naam", "TEXT", "woonplaatsNaam"))
-        self.add_field(B_Field("geometry", "MULTIPOLYGON",
-                               "woonplaatsGeometrie",
-                               to_object=gml.MultiPolygon))
+def woonplaats():
+    obj = B_Object("woonplaats")
+    obj.add_field(B_Field("id", "INTEGER", "identificatie", is_key_field=True))
+    obj.add_field(B_Field("naam", "TEXT", "woonplaatsNaam"))
+    obj.add_field(B_Field("geometry", "MULTIPOLYGON", "woonplaatsGeometrie",
+                          to_object=gml.MultiPolygon))
+    obj.add_tags_to_process()
+    return obj
 
-class OpenbareRuimte(B_Object):
+def pand():
+    obj = B_Object("pand")
+    obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
+    obj.add_field(B_Field("bouwjaar", "TEXT", "bouwjaar"))
+    obj.add_field(B_Field("status", "TEXT", "pandstatus"))
+    obj.add_field(B_Field("geometry", "POLYGON", "pandGeometrie",
+                          to_object=gml.Polygon))
+    obj.add_tags_to_process()
+    return obj
 
-    # kopregel van een in  een csv-bestand
-    header = 'id;naam;geometry'
+def openbare_ruimte():
+    obj = B_Object("openbare_ruimte")
+    obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
+    obj.add_tags_to_process()
+    return obj
 
-    def __init__(self):
-        """OpenbareRuimte(elem), xml_element = xml-tree die alle informatie bevat
-        om een object OpenbareRuimte aan te maken en te vullen.
-        """
-        B_Object.__init__(self, "openbare_ruimte")
-        self.add_field(B_Field("id", "TEXT", "identificatie",
-                               is_key_field=True))
+def verblijfsobject():
+    obj = B_Object("verblijfsobject")
+    obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
+    obj.add_tags_to_process()
+    return obj
 
-class Pand:
+def standplaats():
+    obj = B_Object("standplaats")
+    obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
+    obj.add_tags_to_process()
+    return obj
 
-    def __init__(self):
-        """Pand(elem), xml_element = xml-tree die alle informatie bevat
-        om een object Pand aan te maken en te vullen.
-        """
-        B_Object.__init__(self, "pand")
-        self.add_field(B_Field("id", "TEXT", "identificatie",
-                               is_key_field=True))
-        self.add_field(B_Field("bouwjaar", "TEXT", "bouwjaar"))
-        self.add_field(B_Field("status", "TEXT", "pandstatus"))
-        self.add_field(B_Field("geometry", "POLYGON",
-                               "pandGeometrie",
-                               to_object=gml.Polygon))
+def ligplaats():
+    obj = B_Object("ligplaats")
+    obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
+    obj.add_tags_to_process()
+    return obj
 
-class Verblijfsobject:
+def nummer():
+    obj = B_Object("nummer")
+    obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
+    obj.add_tags_to_process()
+    return obj
 
-    def __init__(self):
-        """Verblijfsobject(elem), xml_element = xml-tree die alle informatie bevat
-        om een object Verblijfsobject aan te maken en te vullen.
-        """
-        B_Object.__init__(self, "verblijfsobject")
-        self.add_field(B_Field("id", "TEXT", "identificatie",
-                               is_key_field=True))
+def gemeente_woonplaats():
+    obj = B_Object("gemeente_woonplaats")
+    obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
+    obj.add_tags_to_process()
+    return obj
 
+##tag2object = {"woonplaats",
+##              "pand",
+##              "openbare_ruimte",
+##              "verblijfsobject",
+##              "standplaats",
+##              "ligplaats",
+##              "nummer",
+##              "gemeente_woonplaats"}
 
-class Standplaats:
-
-    def __init__(self):
-        """Standplaats(elem), xml_element = xml-tree die alle informatie bevat
-        om een object Standplaats aan te maken en te vullen.
-        """
-        B_Object.__init__(self, "standplaats")
-
-    def add_fields(self):
-        self.add_field(B_Field("id", "TEXT", "identificatie",
-                               is_key_field=True))
-
-class Ligplaats:
-
-    def __init__(self):
-        """Ligplaats(elem), xml_element = xml-tree die alle informatie bevat
-        om een object Ligplaats aan te maken en te vullen.
-        """
-        B_Object.__init__(self, "ligplaats")
-        self.add_field(B_Field("id", "TEXT", "identificatie",
-                               is_key_field=True))
-
-class Nummer:
-
-    def __init__(self):
-        """Nummer(elem), xml_element = xml-tree die alle informatie bevat
-        om een object Nummer aan te maken en te vullen.
-        """
-        B_Object.__init__(self, "nummer")
-        self.add_field(B_Field("id", "TEXT", "identificatie",
-                               is_key_field=True))
-
-class GemeenteWoonplaats:
-
-    def __init__(self):
-        """GemeenteWoonplaats(elem), xml_element = xml-tree die alle informatie bevat
-        om een object GemeenteWoonplaats aan te maken en te vullen.
-        """
-        B_Object.__init__(self, "gemeente_woonplaats")
-        self.add_field(B_Field("id", "TEXT", "identificatie",
-                               is_key_field=True))
-
+basis_objects = {"Woonplaats": woonplaats(),
+                 "Pand": pand(),
+                 "openbareRuimte": openbare_ruimte(),
+                 "verblijfsobject": verblijfsobject(),
+                 "Standplaats": standplaats(),
+                 "Ligplaats": ligplaats(),
+                 "Nummer": nummer(),
+                 "Gemeente_woonplaats": gemeente_woonplaats()
+                 }
 

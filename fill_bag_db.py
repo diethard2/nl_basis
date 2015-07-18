@@ -37,8 +37,6 @@ class FillDB:
         self._tag2process = {"producten": self._process_xml_element,
                              "LVC-product": self._process_LVC_product}
         self._tag = None
-        self.TAG_BAG_OBJECTS = {"Woonplaats": bag.Woonplaats,
-                                "Pand": bag.Pand}
 
     def run(self):
         self._conn = dbapi2.connect(self.db)
@@ -137,22 +135,23 @@ class FillDB:
                 a_process(i_elem)
 
     def _process_LVC_product(self, elem):
+        basis_object = None
         for i_elem in elem:
             tag = clean_tag(i_elem.tag)
-            tag_bag_objects = self.TAG_BAG_OBJECTS
-            if tag_bag_objects.has_key(tag):
-                bag_object_class = tag_bag_objects[tag]
-                bag_object = bag_object_class(i_elem)
-                sql = bag_object.as_sql()
-                try:
-                    self._cur.execute(sql)
-                except dbapi2.IntegrityError:
-                    # objects with unique ids are encountered more often in
-                    # xml files delivered. Just ignore..
-                    pass
-                self._xml_object_count += 1
-                i_elem.clear()
-                if self._xml_object_count % 100 is 0:
-                    self._root.clear()            
+            if basis_object is None:
+                if bag.basis_objects.has_key(tag):
+                    basis_object = bag.basis_objects[tag]
+            basis_object.process(i_elem)
+            sql = basis_object.as_sql()
+            try:
+                self._cur.execute(sql)
+            except dbapi2.IntegrityError:
+                # objects with unique ids are encountered more often in
+                # xml files delivered. Just ignore..
+                pass
+            self._xml_object_count += 1
+            i_elem.clear()
+            if self._xml_object_count % 100 is 0:
+                self._root.clear()            
         
         

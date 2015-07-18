@@ -38,7 +38,7 @@ class WoonplaatsTestCase(unittest.TestCase):
         xml_file = open("test/woonplaats.xml")
         root = ET.fromstring(xml_file.read())
         xml_woonplaats = find_xml_with_tag(root, "Woonplaats", None)
-        self.woonplaats = bag.Woonplaats()
+        self.woonplaats = bag.woonplaats()
         self.woonplaats.process(xml_woonplaats)
         xml_file.close()        
 
@@ -93,7 +93,7 @@ class WoonplaatsMultipolygonTestCase(unittest.TestCase):
         xml_file = open("test/woonplaats_multipolygon.xml")
         root = ET.fromstring(xml_file.read())
         xml_woonplaats = find_xml_with_tag(root, "Woonplaats", None)
-        self.woonplaats = bag.Woonplaats()
+        self.woonplaats = bag.woonplaats()
         self.woonplaats.process(xml_woonplaats)
         xml_file.close()        
 
@@ -138,16 +138,16 @@ class PandTestCase(unittest.TestCase):
         xml_file = open("test/pand.xml")
         root = ET.fromstring(xml_file.read())
         xml_pand = find_xml_with_tag(root, "Pand", None)
-        self.pand = bag.Pand()
+        self.pand = bag.pand()
         self.pand.process(xml_pand)
         xml_file.close()        
 
     def test_field_names(self):
-        self.assertEqual(self.woonplaats.field_names(),
-                         ['id', 'naam', 'geometry'])
+        self.assertEqual(self.pand.field_names(),
+                         ['id', 'bouwjaar', 'status', 'geometry'])
 
     def test_field_values(self):
-        self.assertEqual(self.woonplaats.field_values(),
+        self.assertEqual(self.pand.field_values(),
                          ['1987100000011601', '2012', 'Pand in gebruik',
                           'Polygon((253680.97 576716.1, 253679.11 576736.32, \
 253667.39 576735.3, 253669.21 576715.11, 253680.97 576716.1),\
@@ -177,6 +177,8 @@ Polygon((253680.97 576716.1, 253679.11 576736.32, 253667.39 576735.3, \
 _suite_pand = unittest.TestLoader().loadTestsFromTestCase(PandTestCase)
 
 unit_test_suites = [_suite_woonplaats1, _suite_woonplaats2, _suite_pand]
+
+##unit_test_suites = [_suite_woonplaats1]
 
 def main():
     bag_test_suite = unittest.TestSuite(unit_test_suites)
