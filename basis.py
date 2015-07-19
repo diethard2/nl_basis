@@ -145,15 +145,19 @@ class B_Object(object):
                 a_process = self.tag2process[self.tag]
                 a_process(i_elem)
 
+    def process_field(self, xml_element):
+        """Convert contents of xml_element into field_value."""
+        a_field = self.tag2field[self.tag]
+        a_field.set_value_from_xml(xml_element)
+
     def add_tags_to_process(self):
         """indicate which tags should be processed how"""
         for i_tag in self.tag2field.keys():
             self.tag2process[i_tag] = self.process_field
             
-    def process_field(self, xml_element):
-        """Convert contents of xml_element into field_value."""
-        a_field = self.tag2field[self.tag]
-        a_field.set_value_from_xml(xml_element)
+    def init_values(self):
+        for i_field in self.fields:
+            i_field.value = ""
 
     def geometry_field(self):
         """Returns the geometry field.

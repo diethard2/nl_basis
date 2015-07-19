@@ -141,6 +141,8 @@ class FillDB:
             if basis_object is None:
                 if bag.basis_objects.has_key(tag):
                     basis_object = bag.basis_objects[tag]
+            else:
+                basis_object.init_values()
             basis_object.process(i_elem)
             sql = basis_object.as_sql()
             try:
