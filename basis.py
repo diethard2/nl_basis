@@ -1,6 +1,30 @@
 from xml_utils import clean_tag
 import gml
 
+class B_XmlProcessor(object):
+    """superclass for all objects that need to process and interprete xml"""
+    def __init__(self):
+        self.__tag2process = {}
+
+    def _tag2process(self):
+        return self.__tag2process
+
+    tag2process = property(fget=_tag2process, doc="tag2process is a dictionary, \
+the key is the tag from xml the value the process method")
+
+    def add_tag_method_to_process(self, a_tag, a_method):
+        self.__tag2process[a_tag] = a_method
+
+    def process(self, xml_element):
+        """Process an incoming xml_element
+        """
+        for i_elem in xml_element:
+            self.tag = clean_tag(i_elem.tag)
+            if self.tag2process.has_key(self.tag):
+                a_process = self.tag2process[self.tag]
+                a_process(i_elem)
+            
+
 class B_Field(object):
     """general attribute object, fields are created for target collection"""
 
@@ -120,30 +144,21 @@ to get value frome")
             definition += " PRIMARY KEY"
         return definition                        
      
-class B_Object(object):
+class B_Object(B_XmlProcessor):
     """Parent class for all Basis Classes i.e. defined in bag.py."""
 
     def __init__(self, name):
+        B_XmlProcessor.__init__(self)
         # attributes
         self.name = name
         self.fields = []
         self.tag2field = {}
         # for caching variable
         self.tag = None
-        self.tag2process = {}
  
     def add_field(self, field):
         self.fields.append(field)
         self.tag2field[field.from_tag] = field
-
-    def process(self, xml_element):
-        """Process an incoming xml_element describing a basis object
-        """
-        for i_elem in xml_element:
-            self.tag = clean_tag(i_elem.tag)
-            if self.tag2process.has_key(self.tag):
-                a_process = self.tag2process[self.tag]
-                a_process(i_elem)
 
     def process_field(self, xml_element):
         """Convert contents of xml_element into field_value."""
@@ -153,7 +168,7 @@ class B_Object(object):
     def add_tags_to_process(self):
         """indicate which tags should be processed how"""
         for i_tag in self.tag2field.keys():
-            self.tag2process[i_tag] = self.process_field
+            self.add_tag_method_to_process(i_tag, self.process_field)
             
     def init_values(self):
         for i_field in self.fields:
