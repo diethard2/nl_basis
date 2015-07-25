@@ -38,7 +38,8 @@ class PolygonTestCase(unittest.TestCase):
         xml_file = open("test/woonplaats.xml")
         root = ET.fromstring(xml_file.read())
         self.xml_geometry = find_xml_with_tag(root, "woonplaatsGeometrie", None)
-        self.polygon = gml.Polygon(self.xml_geometry)
+        self.polygon = gml.Polygon()
+        self.polygon.process(self.xml_geometry)
         xml_file.close()        
 
     def test_wkt_rings(self):
@@ -55,7 +56,8 @@ class PolygonTestCase(unittest.TestCase):
 81348.441 382809.303, 80802.658 382820.441, 80758.104 383310.532))')
 
     def test_multipolygon(self):
-        multipolygon = gml.MultiPolygon(self.xml_geometry)
+        multipolygon = gml.MultiPolygon()
+        multipolygon.process(self.xml_geometry)
         self.assertEqual(multipolygon.as_wkt(),
                          'MultiPolygon(((80089.798 383288.255, \
 81816.255 383744.931, 82005.608 381650.906, 80769.242 381394.722, \
@@ -81,7 +83,8 @@ class MultiPolygonTestCase(unittest.TestCase):
         xml_file = open("test/woonplaats_multipolygon.xml")
         root = ET.fromstring(xml_file.read())
         self.xml_geometry = find_xml_with_tag(root, "woonplaatsGeometrie", None)
-        self.multipolygon = gml.MultiPolygon(self.xml_geometry)
+        self.multipolygon = gml.MultiPolygon()
+        self.multipolygon.process(self.xml_geometry)
         xml_file.close()        
 
     def test_as_wkt(self):
@@ -95,7 +98,8 @@ class MultiPolygonTestCase(unittest.TestCase):
 184445.447 576914.019, 184247.460 577379.288)))')
 
     def test_polygon(self):
-        polygon = gml.Polygon(self.xml_geometry)
+        polygon = gml.Polygon()
+        polygon.process(self.xml_geometry)
         self.assertEqual(polygon.wkt_rings(), '(())')
 
 _suite_multipolygon = unittest.TestLoader().loadTestsFromTestCase(MultiPolygonTestCase)
@@ -117,7 +121,8 @@ class Polygon3DTestCase(unittest.TestCase):
         xml_file = open("test/pand.xml")
         root = ET.fromstring(xml_file.read())
         self.xml_geometry = find_xml_with_tag(root, "pandGeometrie", None)
-        self.polygon = gml.Polygon(self.xml_geometry)
+        self.polygon = gml.Polygon()
+        self.polygon.process(self.xml_geometry)
         xml_file.close()        
 
     def test_wkt_rings(self):
