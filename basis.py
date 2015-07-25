@@ -1,29 +1,5 @@
-from xml_utils import clean_tag
+from xml_utils import *
 import gml
-
-class B_XmlProcessor(object):
-    """superclass for all objects that need to process and interprete xml"""
-    def __init__(self):
-        self.__tag2process = {}
-
-    def _tag2process(self):
-        return self.__tag2process
-
-    tag2process = property(fget=_tag2process, doc="tag2process is a dictionary, \
-the key is the tag from xml the value the process method")
-
-    def add_tag_method_to_process(self, a_tag, a_method):
-        self.__tag2process[a_tag] = a_method
-
-    def process(self, xml_element):
-        """Process an incoming xml_element
-        """
-        for i_elem in xml_element:
-            self.tag = clean_tag(i_elem.tag)
-            if self.tag2process.has_key(self.tag):
-                a_process = self.tag2process[self.tag]
-                a_process(i_elem)
-            
 
 class B_Field(object):
     """general attribute object, fields are created for target collection"""
@@ -120,7 +96,9 @@ to get value frome")
             self.value = xml_element.text
         else:
             if self.from_tag == clean_tag(xml_element.tag):
-                self.value = self.to_object(xml_element).as_wkt()
+                an_object = self.to_object()
+                an_object.process(xml_element)
+                self.value = an_object.as_text()
             
     def sql_value(self):
         value = self.value

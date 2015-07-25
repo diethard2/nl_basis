@@ -1,5 +1,4 @@
-from xml_utils import clean_tag
-from basis import B_XmlProcessor
+from xml_utils import *
 
 def wkt_coords_from_gml(gml_coords):
     wkt_coords = ""
@@ -41,6 +40,9 @@ class MultiPolygon(B_XmlProcessor):
             wkt += a_polygon.wkt_rings()
         wkt += ")"
         return wkt
+
+    def as_text(self):
+        return self.as_wkt()
         
 
 class Polygon:
@@ -121,6 +123,9 @@ class Polygon:
         """Return valid geom in WKT notation for polygon"""
         wkt = "Polygon" + self.wkt_rings()
         return wkt
+
+    def as_text(self):
+        return self.as_wkt()
 
     def wkt_rings(self):
         """Return only the external en internal rings in WKT \
