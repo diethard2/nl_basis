@@ -67,6 +67,10 @@ def standplaats():
 def ligplaats():
     obj = B_Object("ligplaats")
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
+    obj.add_field(B_Field("id_hoofdadres", "TEXT", "gerelateerdeAdressen",
+                          to_object=BAG_Adressen))
+    obj.add_field(B_Field("geometry", "POLYGON", "ligplaatsGeometrie",
+                          to_object=gml.Polygon))
     obj.add_tags_to_process()
     return obj
 
@@ -90,6 +94,37 @@ def gemeente_woonplaats():
 ##              "ligplaats",
 ##              "nummer",
 ##              "gemeente_woonplaats"}
+
+class BAG_Adressen(B_XmlProcessor):
+    """ To process xml_element gerelateerdeAdressen which is part of
+        several xml object elements
+    """
+
+    def __init__(self):
+        B_XmlProcessor.__init__(self)
+        self.id_hoofdadres = ""
+        self.ids_nevenadressen = []
+        self._add_tags_to_process()
+
+    def _add_tags_to_process(self):
+        self.add_tag_method_to_process("hoofdadres",self._process_hoofdadres)
+        self.add_tag_method_to_process("nevenadres",self._process_nevenadres)
+
+    def _process_hoofdadres(self, elem):
+        self.id_hoofdadres = self._get_id(elem)
+    
+    def _process_nevenadres(self, elem):
+        self.ids_nevenadressen.append(self._get_id(elem))
+
+    def _get_id(self, elem):
+        for i_elem in elem:
+            tag = clean_tag(i_elem.tag)
+            if tag == "identificatie":
+                return i_elem.tag
+
+    def as_text(self):
+        return self.id_hoofdadres
+                
 
 basis_objects = {"Woonplaats": woonplaats(),
                  "Pand": pand(),
