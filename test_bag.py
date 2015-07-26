@@ -176,9 +176,72 @@ Polygon((253680.97 576716.1, 253679.11 576736.32, 253667.39 576735.3, \
 
 _suite_pand = unittest.TestLoader().loadTestsFromTestCase(PandTestCase)
 
-unit_test_suites = [_suite_woonplaats1, _suite_woonplaats2, _suite_pand]
+class LigplaatsTestCase(unittest.TestCase):
+    """
+    Unittest to test ligplaats
 
-##unit_test_suites = [_suite_woonplaats1]
+    Run test from commandline in folder with code with following statement:
+    python test_bag.py
+    """
+    def setUp(self):
+        """
+        For each test create the ligplaats read from xml file ligplaats.xml
+
+        The geometry actually consists of an gml polygon element which includes
+        an outer and inner ring.
+        """
+        xml_file = open("test/ligplaats.xml")
+        root = ET.fromstring(xml_file.read())
+        xml_ligplaats = find_xml_with_tag(root, "Ligplaats", None)
+        self.ligplaats = bag.ligplaats()
+        self.ligplaats.process(xml_ligplaats)
+        xml_file.close()        
+
+    def test_field_names(self):
+        self.assertEqual(self.ligplaats.field_names(),
+                         ['id', 'id_hoofdadres', 'geometry'])
+
+    def test_field_values(self):
+        self.assertEqual(self.ligplaats.field_values(),
+                         ['0479020000000242', '0479200000077867',
+                          'Polygon((111768.489 494373.227, \
+111777.876 494372.193, 111792.324 494370.6, 111792.359 494370.824, \
+111793.299 494376.881, 111795.039 494382.906, 111796.098 494386.936, \
+111796.657 494391.202, 111796.698 494394.091, 111796.701 494394.332, \
+111782.216 494395.467, 111770.828 494396.359, 111769.647 494382.898, \
+111768.489 494373.227))'])
+
+    def test_csv_header(self):
+        self.assertEqual(self.ligplaats.csv_header(), 'id;id_hoofdadres;geometry')
+
+    def test_as_csv(self):
+        self.assertEqual(self.ligplaats.as_csv(),
+                         '0479020000000242;0479200000077867;\
+Polygon((111768.489 494373.227, 111777.876 494372.193, 111792.324 494370.6, \
+111792.359 494370.824, 111793.299 494376.881, 111795.039 494382.906, \
+111796.098 494386.936, 111796.657 494391.202, 111796.698 494394.091, \
+111796.701 494394.332, 111782.216 494395.467, 111770.828 494396.359, \
+111769.647 494382.898, 111768.489 494373.227))')
+
+    def test_as_sql(self):
+        self.assertEqual(self.ligplaats.as_sql(),
+                         "INSERT INTO ligplaats \
+(id, id_hoofdadres, geometry) VALUES ('0479020000000242', \
+'0479200000077867', GeomFromText('Polygon((111768.489 494373.227, \
+111777.876 494372.193, 111792.324 494370.6, 111792.359 494370.824, \
+111793.299 494376.881, 111795.039 494382.906, 111796.098 494386.936, \
+111796.657 494391.202, 111796.698 494394.091, 111796.701 494394.332, \
+111782.216 494395.467, 111770.828 494396.359, 111769.647 494382.898, \
+111768.489 494373.227))', 28992))")
+
+##    def test_ids_nevenadressen(self):
+##        self.assertEqual(self.ligplaats.ids_nevenadressen,
+##                         {'0513200000029680', '0513200000041049'})
+
+_suite_ligplaats = unittest.TestLoader().loadTestsFromTestCase(LigplaatsTestCase)
+
+unit_test_suites = [_suite_woonplaats1, _suite_woonplaats2, _suite_pand,
+                    _suite_ligplaats]
 
 def main():
     bag_test_suite = unittest.TestSuite(unit_test_suites)

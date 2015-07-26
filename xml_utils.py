@@ -30,7 +30,7 @@ class B_XmlProcessor(object):
         return self.__tag2process
 
     tag2process = property(fget=_tag2process, doc="tag2process is a dictionary, \
-the key is the tag from xml the value the process method")
+the key is the tag from xml the value the method to process the xml")
 
     def add_tag_method_to_process(self, a_tag, a_method):
         self.__tag2process[a_tag] = a_method

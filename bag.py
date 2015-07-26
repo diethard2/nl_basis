@@ -120,7 +120,7 @@ class BAG_Adressen(B_XmlProcessor):
         for i_elem in elem:
             tag = clean_tag(i_elem.tag)
             if tag == "identificatie":
-                return i_elem.tag
+                return i_elem.text
 
     def as_text(self):
         return self.id_hoofdadres

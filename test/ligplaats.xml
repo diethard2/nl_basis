@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xb:BAG-Extract-Deelbestand-LVC xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xb="http://www.kadaster.nl/schemas/bag-verstrekkingen/extract-deelbestand-lvc/v20090901" xmlns:bag_LVC="http://www.kadaster.nl/schemas/imbag/lvc/v20090901" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:bagtype="http://www.kadaster.nl/schemas/imbag/imbag-types/v20090901" xmlns:nen5825="http://www.kadaster.nl/schemas/imbag/nen5825/v20090901" xmlns:product_LVC="http://www.kadaster.nl/schemas/bag-verstrekkingen/extract-producten-lvc/v20090901" xmlns:selecties-extract="http://www.kadaster.nl/schemas/bag-verstrekkingen/extract-selecties/v20090901" xsi:schemaLocation="http://www.kadaster.nl/schemas/bag-verstrekkingen/extract-deelbestand-lvc/v20090901 http://www.kadaster.nl/schemas/bag-verstrekkingen/extract-deelbestand-lvc/v20090901/BagvsExtractDeelbestandExtractLvc-1.4.xsd">
+  <xb:antwoord>
+    <xb:vraag>
+      <selecties-extract:Gebied-Registratief>
+        <selecties-extract:Gebied-NLD>
+          <selecties-extract:GebiedIdentificatie>9999</selecties-extract:GebiedIdentificatie>
+          <selecties-extract:GebiedNaam>Nederland</selecties-extract:GebiedNaam>
+          <selecties-extract:gebiedTypeNederland>1</selecties-extract:gebiedTypeNederland>
+        </selecties-extract:Gebied-NLD>
+      </selecties-extract:Gebied-Registratief>
+      <selecties-extract:StandTechnischeDatum>20150608</selecties-extract:StandTechnischeDatum>
+    </xb:vraag>
+    <xb:producten>
+      <product_LVC:LVC-product><bag_LVC:Ligplaats><bag_LVC:gerelateerdeAdressen><bag_LVC:hoofdadres><bag_LVC:identificatie>0479200000077867</bag_LVC:identificatie></bag_LVC:hoofdadres> <bag_LVC:nevenadres><bag_LVC:identificatie>0513200000029680</bag_LVC:identificatie></bag_LVC:nevenadres><bag_LVC:nevenadres><bag_LVC:identificatie>0513200000041049</bag_LVC:identificatie></bag_LVC:nevenadres></bag_LVC:gerelateerdeAdressen><bag_LVC:identificatie>0479020000000242</bag_LVC:identificatie><bag_LVC:aanduidingRecordInactief>N</bag_LVC:aanduidingRecordInactief><bag_LVC:aanduidingRecordCorrectie>0</bag_LVC:aanduidingRecordCorrectie><bag_LVC:officieel>N</bag_LVC:officieel><bag_LVC:ligplaatsStatus>Plaats aangewezen</bag_LVC:ligplaatsStatus><bag_LVC:ligplaatsGeometrie><gml:Polygon srsName="urn:ogc:def:crs:EPSG::28992">
+  <gml:exterior>
+    <gml:LinearRing>
+      <gml:posList srsDimension="3" count="14">111768.489 494373.227 0.0 111777.876 494372.193 0.0 111792.324 494370.6 0.0 111792.359 494370.824 0.0 111793.299 494376.881 0.0 111795.039 494382.906 0.0 111796.098 494386.936 0.0 111796.657 494391.202 0.0 111796.698 494394.091 0.0 111796.701 494394.332 0.0 111782.216 494395.467 0.0 111770.828 494396.359 0.0 111769.647 494382.898 0.0 111768.489 494373.227 0.0</gml:posList>
+    </gml:LinearRing>
+  </gml:exterior>
+</gml:Polygon></bag_LVC:ligplaatsGeometrie><bag_LVC:tijdvakgeldigheid><bagtype:begindatumTijdvakGeldigheid>2013101700000000</bagtype:begindatumTijdvakGeldigheid></bag_LVC:tijdvakgeldigheid><bag_LVC:inOnderzoek>N</bag_LVC:inOnderzoek><bag_LVC:bron><bagtype:documentdatum>20131017</bagtype:documentdatum><bagtype:documentnummer>2013/241424</bagtype:documentnummer></bag_LVC:bron></bag_LVC:Ligplaats></product_LVC:LVC-product>
+    </xb:producten>
+  </xb:antwoord>
+</xb:BAG-Extract-Deelbestand-LVC>
