@@ -240,6 +240,57 @@ Polygon((111768.489 494373.227, 111777.876 494372.193, 111792.324 494370.6, \
 
 _suite_ligplaats = unittest.TestLoader().loadTestsFromTestCase(LigplaatsTestCase)
 
+class StandplaatsTestCase(unittest.TestCase):
+    """
+    Unittest to test standplaats
+
+    Run test from commandline in folder with code with following statement:
+    python test_bag.py
+    """
+    def setUp(self):
+        """
+        For each test create the standplaats read from xml file standplaats.xml
+
+        The geometry actually consists of an gml polygon element which includes
+        an outer and inner ring.
+        """
+        xml_file = open("test/standplaats.xml")
+        root = ET.fromstring(xml_file.read())
+        xml_standplaats = find_xml_with_tag(root, "Standplaats", None)
+        self.standplaats = bag.standplaats()
+        self.standplaats.process(xml_standplaats)
+        xml_file.close()        
+
+    def test_field_names(self):
+        self.assertEqual(self.standplaats.field_names(),
+                         ['id', 'id_hoofdadres', 'geometry'])
+
+    def test_field_values(self):
+        self.assertEqual(self.standplaats.field_values(),
+                         ['1730030000000161', '1730200000020033',
+                          'Polygon((240292.542 568557.492, \
+240297.926 568548.571, 240309.307 568554.416, 240304.385 568563.491, \
+240292.542 568557.492))'])
+
+    def test_csv_header(self):
+        self.assertEqual(self.standplaats.csv_header(), 'id;id_hoofdadres;geometry')
+
+    def test_as_csv(self):
+        self.assertEqual(self.standplaats.as_csv(),
+                         '1730030000000161;1730200000020033;\
+Polygon((240292.542 568557.492, 240297.926 568548.571, 240309.307 568554.416, \
+240304.385 568563.491, 240292.542 568557.492))')
+
+    def test_as_sql(self):
+        self.assertEqual(self.standplaats.as_sql(),
+                         "INSERT INTO standplaats \
+(id, id_hoofdadres, geometry) VALUES ('1730030000000161', \
+'1730200000020033', GeomFromText('Polygon((240292.542 568557.492, \
+240297.926 568548.571, 240309.307 568554.416, 240304.385 568563.491, \
+240292.542 568557.492))', 28992))")
+
+_suite_standplaats = unittest.TestLoader().loadTestsFromTestCase(StandplaatsTestCase)
+
 
 class OpenbareRuimteTestCase(unittest.TestCase):
     """
@@ -288,7 +339,8 @@ class OpenbareRuimteTestCase(unittest.TestCase):
 _suite_openbare_ruimte = unittest.TestLoader().loadTestsFromTestCase(OpenbareRuimteTestCase)
 
 unit_test_suites = [_suite_woonplaats1, _suite_woonplaats2, _suite_pand,
-                    _suite_ligplaats, _suite_openbare_ruimte]
+                    _suite_ligplaats, _suite_standplaats,
+                    _suite_openbare_ruimte]
 
 def main():
     bag_test_suite = unittest.TestSuite(unit_test_suites)

@@ -65,6 +65,10 @@ def verblijfsobject():
 def standplaats():
     obj = B_Object("standplaats")
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
+    obj.add_field(B_Field("id_hoofdadres", "TEXT", "gerelateerdeAdressen",
+                          to_object=BAG_Adressen))
+    obj.add_field(B_Field("geometry", "POLYGON", "standplaatsGeometrie",
+                          to_object=gml.Polygon))
     obj.add_tags_to_process()
     return obj
 
