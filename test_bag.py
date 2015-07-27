@@ -240,8 +240,55 @@ Polygon((111768.489 494373.227, 111777.876 494372.193, 111792.324 494370.6, \
 
 _suite_ligplaats = unittest.TestLoader().loadTestsFromTestCase(LigplaatsTestCase)
 
+
+class OpenbareRuimteTestCase(unittest.TestCase):
+    """
+    Unittest to test openbare_ruimte
+
+    Run test from commandline in folder with code with following statement:
+    python test_bag.py
+    """
+    def setUp(self):
+        """
+        For each test create the openbare_ruimte read from xml file openbare_ruimte.xml
+
+        The geometry actually consists of an gml polygon element which includes
+        an outer and inner ring.
+        """
+        xml_file = open("test/openbare_ruimte.xml")
+        root = ET.fromstring(xml_file.read())
+        xml_openbare_ruimte = find_xml_with_tag(root, "OpenbareRuimte", None)
+        self.openbare_ruimte = bag.openbare_ruimte()
+        self.openbare_ruimte.process(xml_openbare_ruimte)
+        xml_file.close()
+
+    def test_field_names(self):
+        self.assertEqual(self.openbare_ruimte.field_names(),
+                         ['id', 'naam', 'type', 'id_woonplaats'])
+
+    def test_field_values(self):
+        self.assertEqual(self.openbare_ruimte.field_values(),
+                         ['1895300000000478', 'Oosthofflaan',
+                          'Weg', '1893'])
+
+    def test_csv_header(self):
+        self.assertEqual(self.openbare_ruimte.csv_header(),
+                         'id;naam;type;id_woonplaats')
+
+    def test_as_csv(self):
+        self.assertEqual(self.openbare_ruimte.as_csv(),
+                         '1895300000000478;Oosthofflaan;Weg;1893')
+
+    def test_as_sql(self):
+        self.assertEqual(self.openbare_ruimte.as_sql(),
+                         "INSERT INTO openbare_ruimte \
+(id, naam, type, id_woonplaats) VALUES ('1895300000000478', 'Oosthofflaan', \
+'Weg', '1893')")
+
+_suite_openbare_ruimte = unittest.TestLoader().loadTestsFromTestCase(OpenbareRuimteTestCase)
+
 unit_test_suites = [_suite_woonplaats1, _suite_woonplaats2, _suite_pand,
-                    _suite_ligplaats]
+                    _suite_ligplaats, _suite_openbare_ruimte]
 
 def main():
     bag_test_suite = unittest.TestSuite(unit_test_suites)

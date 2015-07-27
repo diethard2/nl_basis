@@ -49,6 +49,10 @@ def pand():
 def openbare_ruimte():
     obj = B_Object("openbare_ruimte")
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
+    obj.add_field(B_Field("naam", "TEXT", "openbareRuimteNaam"))
+    obj.add_field(B_Field("type", "TEXT", "openbareRuimteType"))
+    obj.add_field(B_Field("id_woonplaats", "TEXT", "gerelateerdeWoonplaats",
+                          to_object=BAG_Woonplaats))
     obj.add_tags_to_process()
     return obj
 
@@ -95,6 +99,23 @@ def gemeente_woonplaats():
 ##              "nummer",
 ##              "gemeente_woonplaats"}
 
+class BAG_Woonplaats(B_XmlProcessor):
+    """ To process xml_element gerelateerdeWoonplaats which is part of
+        xml object openbare ruimte
+    """
+
+    def __init__(self):
+        B_XmlProcessor.__init__(self)
+        self.id_woonplaats = ""
+        self.add_tag_method_to_process("identificatie",self._process_id)
+
+    def _process_id(self, elem):
+        self.id_woonplaats = elem.text
+
+    def as_text(self):
+        return self.id_woonplaats
+
+
 class BAG_Adressen(B_XmlProcessor):
     """ To process xml_element gerelateerdeAdressen which is part of
         several xml object elements
@@ -128,7 +149,7 @@ class BAG_Adressen(B_XmlProcessor):
 
 basis_objects = {"Woonplaats": woonplaats(),
                  "Pand": pand(),
-                 "openbareRuimte": openbare_ruimte(),
+                 "OpenbareRuimte": openbare_ruimte(),
                  "verblijfsobject": verblijfsobject(),
                  "Standplaats": standplaats(),
                  "Ligplaats": ligplaats(),
