@@ -21,9 +21,36 @@ from xml_utils import *
 import xml.etree.ElementTree as ET
 import unittest
 
+
+class PointTestCase(unittest.TestCase):
+
+    def setUp(self):
+        """
+        For each test create the Woonplaats read from xml file woonplaats.xml
+
+        The geometry actually consists of an gml point element which includes
+        an x, y and z coordinate.
+        """
+        xml_file = open("test/verblijfsobject.xml")
+        root = ET.fromstring(xml_file.read())
+        self.xml_geometry = find_xml_with_tag(root, "verblijfsobjectGeometrie", None)
+        self.point = gml.Point()
+        self.point.process(self.xml_geometry)
+        xml_file.close()        
+
+    def test_coords(self):
+        self.assertEqual(self.point.coords, '252767.348 593745.504')
+
+    def test_as_wkt(self):
+        self.assertEqual(self.point.as_wkt(),
+                         'Point(252767.348 593745.504)')
+    
+_suite_point = unittest.TestLoader().loadTestsFromTestCase(PointTestCase)
+
+
 class PolygonTestCase(unittest.TestCase):
     """
-    First unittest to test Woonplaats
+    First unittest to test GML Polygon
 
     Run test from commandline in folder with code with following statement:
     python test_bag.py
@@ -140,7 +167,8 @@ class Polygon3DTestCase(unittest.TestCase):
 
 _suite_polygon3d = unittest.TestLoader().loadTestsFromTestCase(Polygon3DTestCase)
 
-unit_test_suites = [_suite_polygon, _suite_multipolygon, _suite_polygon3d]
+unit_test_suites = [_suite_point, _suite_polygon, _suite_multipolygon,
+                    _suite_polygon3d]
 
 def main():
     gml_test_suite = unittest.TestSuite(unit_test_suites)

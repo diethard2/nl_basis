@@ -338,9 +338,62 @@ class OpenbareRuimteTestCase(unittest.TestCase):
 
 _suite_openbare_ruimte = unittest.TestLoader().loadTestsFromTestCase(OpenbareRuimteTestCase)
 
+
+
+class VerblijfsobjectTestCase(unittest.TestCase):
+    """
+    Unittest to test verblijfsobject
+
+    Run test from commandline in folder with code with following statement:
+    python test_bag.py
+    """
+    def setUp(self):
+        """
+        For each test create the verblijfsobject read from xml file verblijfsobject.xml
+
+        The geometry actually consists of an gml polygon element which includes
+        an outer and inner ring.
+        """
+        xml_file = open("test/verblijfsobject.xml")
+        root = ET.fromstring(xml_file.read())
+        xml_verblijfsobject = find_xml_with_tag(root, "Verblijfsobject", None)
+        self.verblijfsobject = bag.verblijfsobject()
+        self.verblijfsobject.process(xml_verblijfsobject)
+        xml_file.close()
+
+    def test_field_names(self):
+        self.assertEqual(self.verblijfsobject.field_names(),
+                         ['id', 'gebruiksdoel', 'oppervlakte',
+                          'id_hoofdadres', 'id_pand', 'geometry'])
+
+    def test_field_values(self):
+        self.assertEqual(self.verblijfsobject.field_values(),
+                         ['0003010000125985', 'woonfunctie', '69',
+                          '0003200000134057', '0003100000122770',
+                          'Point(252767.348 593745.504)'])
+
+    def test_csv_header(self):
+        self.assertEqual(self.verblijfsobject.csv_header(),
+                         'id;gebruiksdoel;oppervlakte;id_hoofdadres;\
+id_pand;geometry')
+
+    def test_as_csv(self):
+        self.assertEqual(self.verblijfsobject.as_csv(),
+                         '0003010000125985;woonfunctie;69;0003200000134057;\
+0003100000122770;Point(252767.348 593745.504)')
+
+    def test_as_sql(self):
+        self.assertEqual(self.verblijfsobject.as_sql(),
+                         "INSERT INTO verblijfsobject \
+(id, gebruiksdoel, oppervlakte, id_hoofdadres, id_pand, geometry) \
+VALUES ('0003010000125985', 'woonfunctie', '69', '0003200000134057', \
+'0003100000122770', GeomFromText('Point(252767.348 593745.504)', 28992))")
+
+_suite_verblijfsobject = unittest.TestLoader().loadTestsFromTestCase(VerblijfsobjectTestCase)
+
 unit_test_suites = [_suite_woonplaats1, _suite_woonplaats2, _suite_pand,
                     _suite_ligplaats, _suite_standplaats,
-                    _suite_openbare_ruimte]
+                    _suite_openbare_ruimte, _suite_verblijfsobject]
 
 def main():
     bag_test_suite = unittest.TestSuite(unit_test_suites)

@@ -12,7 +12,37 @@ def wkt_coords_from_gml(gml_coords):
             wkt_coords += value + ', '
     return wkt_coords[:-2]
 
-            
+def coords_2d_from_3d(gml_coords_text):
+    xyz = gml_coords_text.split(' ')
+    xy = []
+    l_count = 0
+    for i_coord in xyz:
+        l_count += 1
+        if l_count % 3 > 0:
+            xy.append(i_coord)
+    return ' '.join(xy)
+
+class Point(B_XmlProcessor):
+
+    def __init__(self):
+        B_XmlProcessor.__init__(self)
+        self.coords = ""
+        self.add_tag_method_to_process("Point", self.process)
+        self.add_tag_method_to_process("pos", self._process_pos)
+
+    def _process_pos(self, elem):
+        '''From xml element pos derive the position of a GML Point'''
+        coord_text = elem.text
+        self.coords = coords_2d_from_3d(elem.text)
+
+    def as_wkt(self):
+        """Return valid geom in WKT notation for polygon"""
+        wkt = "Point(%s)" % self.coords
+        return wkt
+
+    def as_text(self):
+        return self.as_wkt()
+        
 class MultiPolygon(B_XmlProcessor):
     
     def __init__(self):
@@ -97,7 +127,7 @@ class Polygon:
                     
     def _text_poslist(self, elem):
         if self._is_poslist_3d(elem):
-            return self._2d_from_3d_poslist(elem.text)
+            return coords_2d_from_3d(elem.text)
         else:
             return elem.text
             
@@ -109,16 +139,6 @@ class Polygon:
                 is_3d = True
         return is_3d
        
-    def _2d_from_3d_poslist(self, text):
-        xyz = text.split(' ')
-        xy = []
-        l_count = 0
-        for i_coord in xyz:
-            l_count += 1
-            if l_count % 3 > 0:
-                xy.append(i_coord)
-        return ' '.join(xy)
-
     def as_wkt(self):
         """Return valid geom in WKT notation for polygon"""
         wkt = "Polygon" + self.wkt_rings()
