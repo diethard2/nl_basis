@@ -163,7 +163,7 @@ class BAG_Adressen(B_XmlProcessor):
 basis_objects = {"Woonplaats": woonplaats(),
                  "Pand": pand(),
                  "OpenbareRuimte": openbare_ruimte(),
-                 "verblijfsobject": verblijfsobject(),
+                 "Verblijfsobject": verblijfsobject(),
                  "Standplaats": standplaats(),
                  "Ligplaats": ligplaats(),
                  "Nummer": nummer(),
