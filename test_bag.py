@@ -144,22 +144,22 @@ class PandTestCase(unittest.TestCase):
 
     def test_field_names(self):
         self.assertEqual(self.pand.field_names(),
-                         ['id', 'bouwjaar', 'status', 'geometry'])
+                         ['id', 'bouwjaar', 'geometry'])
 
     def test_field_values(self):
         self.assertEqual(self.pand.field_values(),
-                         ['1987100000011601', '2012', 'Pand in gebruik',
+                         ['1987100000011601', '2012', 
                           'Polygon((253680.97 576716.1, 253679.11 576736.32, \
 253667.39 576735.3, 253669.21 576715.11, 253680.97 576716.1),\
 (253679.875 576724.723, 253671.753 576723.992, 253671.406 576727.849, \
 253679.528 576728.58, 253679.875 576724.723))'])
 
     def test_csv_header(self):
-        self.assertEqual(self.pand.csv_header(), 'id;bouwjaar;status;geometry')
+        self.assertEqual(self.pand.csv_header(), 'id;bouwjaar;geometry')
 
     def test_as_csv(self):
         self.assertEqual(self.pand.as_csv(),
-                         '1987100000011601;2012;Pand in gebruik;\
+                         '1987100000011601;2012;\
 Polygon((253680.97 576716.1, 253679.11 576736.32, 253667.39 576735.3, \
 253669.21 576715.11, 253680.97 576716.1),(253679.875 576724.723, \
 253671.753 576723.992, 253671.406 576727.849, 253679.528 576728.58, \
@@ -168,8 +168,8 @@ Polygon((253680.97 576716.1, 253679.11 576736.32, 253667.39 576735.3, \
     def test_as_sql(self):
         self.assertEqual(self.pand.as_sql(),
                          "INSERT INTO pand \
-(id, bouwjaar, status, geometry) VALUES ('1987100000011601', \
-'2012', 'Pand in gebruik', GeomFromText('Polygon((253680.97 576716.1, \
+(id, bouwjaar, geometry) VALUES ('1987100000011601', \
+'2012', GeomFromText('Polygon((253680.97 576716.1, \
 253679.11 576736.32, 253667.39 576735.3, 253669.21 576715.11, \
 253680.97 576716.1),(253679.875 576724.723, 253671.753 576723.992, \
 253671.406 576727.849, 253679.528 576728.58, 253679.875 576724.723))', 28992))")
@@ -338,7 +338,99 @@ class OpenbareRuimteTestCase(unittest.TestCase):
 
 _suite_openbare_ruimte = unittest.TestLoader().loadTestsFromTestCase(OpenbareRuimteTestCase)
 
+class NummeraanduidingTestCase(unittest.TestCase):
+    """
+    Unittest to test nummeraanduiding
 
+    Run test from commandline in folder with code with following statement:
+    python test_bag.py
+    """
+    def setUp(self):
+        """
+        For each test create the nummeraanduiding read from xml file nummeraanduiding.xml
+
+        The geometry actually consists of an gml polygon element which includes
+        an outer and inner ring.
+        """
+        xml_file = open("test/nummeraanduiding.xml")
+        root = ET.fromstring(xml_file.read())
+        xml_nummeraanduiding = find_xml_with_tag(root, "Nummeraanduiding", None)
+        self.nummeraanduiding = bag.nummeraanduiding()
+        self.nummeraanduiding.process(xml_nummeraanduiding)
+        xml_file.close()
+
+    def test_field_names(self):
+        self.assertEqual(self.nummeraanduiding.field_names(),
+                         ['id', 'postcode', 'huisnummer', 'type',
+                          'id_openbare_ruimte'])
+
+    def test_field_values(self):
+        self.assertEqual(self.nummeraanduiding.field_values(),
+                         ['1987200000006076', '9651BG', '13',
+                          'Verblijfsobject', '1987300000000095'])
+
+    def test_csv_header(self):
+        self.assertEqual(self.nummeraanduiding.csv_header(),
+                         'id;postcode;huisnummer;type;id_openbare_ruimte')
+
+    def test_as_csv(self):
+        self.assertEqual(self.nummeraanduiding.as_csv(),
+                         '1987200000006076;9651BG;13;Verblijfsobject;\
+1987300000000095')
+
+    def test_as_sql(self):
+        self.assertEqual(self.nummeraanduiding.as_sql(),
+                         "INSERT INTO nummeraanduiding \
+(id, postcode, huisnummer, type, id_openbare_ruimte) VALUES ('1987200000006076', \
+'9651BG', '13', 'Verblijfsobject', '1987300000000095')")
+
+_suite_nummeraanduiding = unittest.TestLoader().loadTestsFromTestCase(NummeraanduidingTestCase)
+
+class WoonplaatsGemeenteTestCase(unittest.TestCase):
+    """
+    Unittest to test woonplaats_gemeente
+
+    Run test from commandline in folder with code with following statement:
+    python test_bag.py
+    """
+    def setUp(self):
+        """
+        For each test create the woonplaats_gemeente read from xml file woonplaats_gemeente.xml
+
+        The geometry actually consists of an gml polygon element which includes
+        an outer and inner ring.
+        """
+        xml_file = open("test/gemeentewoonplaatsrelatie.xml")
+        root = ET.fromstring(xml_file.read())
+        xml_woonplaats_gemeente = find_xml_with_tag(root,
+                                                    "GemeenteWoonplaatsRelatie",
+                                                    None)
+        self.woonplaats_gemeente = bag.woonplaats_gemeente()
+        self.woonplaats_gemeente.process(xml_woonplaats_gemeente)
+        xml_file.close()
+
+    def test_field_names(self):
+        self.assertEqual(self.woonplaats_gemeente.field_names(),
+                         ['id_woonplaats', 'id_gemeente'])
+
+    def test_field_values(self):
+        self.assertEqual(self.woonplaats_gemeente.field_values(),
+                         ['3386', '0003'])
+
+    def test_csv_header(self):
+        self.assertEqual(self.woonplaats_gemeente.csv_header(),
+                         'id_woonplaats;id_gemeente')
+
+    def test_as_csv(self):
+        self.assertEqual(self.woonplaats_gemeente.as_csv(),
+                         '3386;0003')
+
+    def test_as_sql(self):
+        self.assertEqual(self.woonplaats_gemeente.as_sql(),
+                         "INSERT INTO woonplaats_gemeente \
+(id_woonplaats, id_gemeente) VALUES ('3386', '0003')")
+
+_suite_woonplaats_gemeente = unittest.TestLoader().loadTestsFromTestCase(WoonplaatsGemeenteTestCase)
 
 class VerblijfsobjectTestCase(unittest.TestCase):
     """
@@ -393,7 +485,8 @@ _suite_verblijfsobject = unittest.TestLoader().loadTestsFromTestCase(Verblijfsob
 
 unit_test_suites = [_suite_woonplaats1, _suite_woonplaats2, _suite_pand,
                     _suite_ligplaats, _suite_standplaats,
-                    _suite_openbare_ruimte, _suite_verblijfsobject]
+                    _suite_openbare_ruimte, _suite_nummeraanduiding,
+                    _suite_woonplaats_gemeente, _suite_verblijfsobject]
 
 def main():
     bag_test_suite = unittest.TestSuite(unit_test_suites)

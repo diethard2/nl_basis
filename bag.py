@@ -40,7 +40,7 @@ def pand():
     obj = B_Object("pand")
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
     obj.add_field(B_Field("bouwjaar", "TEXT", "bouwjaar"))
-    obj.add_field(B_Field("status", "TEXT", "pandstatus"))
+##    obj.add_field(B_Field("status", "TEXT", "pandstatus"))
     obj.add_field(B_Field("geometry", "POLYGON", "pandGeometrie",
                           to_object=gml.Polygon))
     obj.add_tags_to_process()
@@ -92,26 +92,26 @@ def ligplaats():
     obj.add_tags_to_process()
     return obj
 
-def nummer():
-    obj = B_Object("nummer")
+def nummeraanduiding():
+    obj = B_Object("nummeraanduiding")
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
+    obj.add_field(B_Field("postcode", "TEXT", "postcode"))
+    obj.add_field(B_Field("huisnummer", "TEXT", "huisnummer"))
+    obj.add_field(B_Field("type", "TEXT", "typeAdresseerbaarObject",
+                          is_mandatory=False))
+    obj.add_field(B_Field("id_openbare_ruimte", "TEXT",
+                          "gerelateerdeOpenbareRuimte", to_object=BAG_Id))
     obj.add_tags_to_process()
     return obj
 
-def gemeente_woonplaats():
-    obj = B_Object("gemeente_woonplaats")
-    obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
+def woonplaats_gemeente():
+    obj = B_Object("woonplaats_gemeente")
+    obj.add_field(B_Field("id_woonplaats", "TEXT", "gerelateerdeWoonplaats",
+                          to_object=BAG_Id, is_key_field=True))
+    obj.add_field(B_Field("id_gemeente", "TEXT", "gerelateerdeGemeente",
+                          to_object=BAG_Id))
     obj.add_tags_to_process()
     return obj
-
-##tag2object = {"woonplaats",
-##              "pand",
-##              "openbare_ruimte",
-##              "verblijfsobject",
-##              "standplaats",
-##              "ligplaats",
-##              "nummer",
-##              "gemeente_woonplaats"}
 
 class BAG_Id(B_XmlProcessor):
     """ To process xml_element gerelateerdeWoonplaats or gerelateerdePand
@@ -166,7 +166,7 @@ basis_objects = {"Woonplaats": woonplaats(),
                  "Verblijfsobject": verblijfsobject(),
                  "Standplaats": standplaats(),
                  "Ligplaats": ligplaats(),
-                 "Nummer": nummer(),
-                 "Gemeente_woonplaats": gemeente_woonplaats()
+                 "Nummeraanduiding": nummeraanduiding(),
+                 "GemeenteWoonplaatsRelatie": woonplaats_gemeente()
                  }
 
