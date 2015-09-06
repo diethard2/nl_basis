@@ -35,7 +35,8 @@ class FillDB:
         self._root = None
         self._xml_object_count = 0
         self._tag2process = {"producten": self._process_xml_element,
-                             "LVC-product": self._process_LVC_product}
+                             "LVC-product": self._process_LVC_product,
+                             "GemeenteWoonplaatsRelatieProduct": self._process_LVC_product}
         self._tag = None
 
     def run(self):
@@ -155,5 +156,4 @@ class FillDB:
             i_elem.clear()
             if self._xml_object_count % 100 is 0:
                 self._root.clear()            
-        
         

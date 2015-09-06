@@ -37,21 +37,19 @@ def get_sql_statements(sql_file):
     >>> statements
     ['CREATE TABLE person (name TEXT)', "INSERT INTO person VALUES ('Peter')"]
     '''
-    sql_statements = []
-    for i_basis_object in bag.basis_objects.values():
-        sql_statements.extend(i_basis_object.sql_create_table_statements())
 
     # next insert the sql_statements to create joins and special indexes
-##    sql_statement = ""
-##    for line in open(sql_file):
-##        if line.startswith("--"):
-##            sql_statement = ' '.join(sql_statement.split())
-##            sql_statements.append(sql_statement)
-##            sql_statement = ""
-##            continue
-##        sql_statement += line
-##    sql_statement = ' '.join(sql_statement.split())
-##    sql_statements.append(sql_statement)
+    sql_statements = []
+    sql_statement = ""
+    for line in open(sql_file):
+        if line.startswith("--"):
+            sql_statement = ' '.join(sql_statement.split())
+            sql_statements.append(sql_statement)
+            sql_statement = ""
+            continue
+        sql_statement += line
+    sql_statement = ' '.join(sql_statement.split())
+    sql_statements.append(sql_statement)
     return sql_statements
 
 def create_db(new_file):
@@ -85,8 +83,9 @@ def create_datamodel(spatialite_db):
     '''
     conn = dbapi2.connect(spatialite_db)
     cur = conn.cursor()
-    sql_file = 'sql/create_tables.sql'#my_resources.my_resource_file(my_resources.sql_file)
-    sql_statements = get_sql_statements(sql_file)
+    sql_file = 'sql/gemeente.sql'#my_resources.my_resource_file(my_resources.sql_file)
+    sql_statements = bag.sql_creation_statements()
+    sql_statements.extend(get_sql_statements(sql_file))
     for sql_statement in sql_statements:
         rs = cur.execute(sql_statement)
     conn.commit()

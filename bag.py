@@ -6,7 +6,7 @@
  - OpenbareRuimte
  - Pand
  - Verblijfsobject, Standplaats, Ligplaats
- - Nummer
+ - Nummeraanduiding
  - GemeenteWoonplaats (koppeling tussen gemeente en woonplaatsen)
  -------------------
  begin                : 2015-06-01
@@ -29,7 +29,7 @@ from basis import *
 
 def woonplaats():
     obj = B_Object("woonplaats")
-    obj.add_field(B_Field("id", "INTEGER", "identificatie", is_key_field=True))
+    obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
     obj.add_field(B_Field("naam", "TEXT", "woonplaatsNaam"))
     obj.add_field(B_Field("geometry", "MULTIPOLYGON", "woonplaatsGeometrie",
                           to_object=gml.MultiPolygon))
@@ -112,6 +112,13 @@ def woonplaats_gemeente():
                           to_object=BAG_Id))
     obj.add_tags_to_process()
     return obj
+
+def sql_creation_statements():
+    sql_statements = []
+    for i_basis_object in basis_objects.values():
+        sql_statements.extend(i_basis_object.sql_create_table_statements())
+    return sql_statements
+
 
 class BAG_Id(B_XmlProcessor):
     """ To process xml_element gerelateerdeWoonplaats or gerelateerdePand
