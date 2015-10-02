@@ -1,6 +1,6 @@
 """
 /***************************************************************************
- Unit test suite to test bag objects.
+ Unit test suite to test gml geometry objects.
  -------------------
  begin                : 26-06-2015
  copyright            : (C) 2015 by Diethard Jansen

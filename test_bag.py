@@ -66,8 +66,8 @@ class WoonplaatsTestCase(unittest.TestCase):
 
     def test_as_sql(self):
         self.assertEqual(self.woonplaats.as_sql(),
-                         "INSERT INTO woonplaats (id, naam, geometry) \
-VALUES (1000, 'Hoogerheide', \
+                         "INSERT INTO bag_woonplaats (id, naam, geometry) \
+VALUES ('1000', 'Hoogerheide', \
 GeomFromText('MultiPolygon(((80089.798 383288.255, 81816.255 383744.931, \
 82005.608 381650.906, 80769.242 381394.722, 80089.798 383288.255),\
 (80758.104 383310.532, 81704.871 383455.332, 81348.441 382809.303, \
@@ -109,8 +109,8 @@ class WoonplaatsMultipolygonTestCase(unittest.TestCase):
 
     def test_as_sql(self):
         self.assertEqual(self.woonplaats.as_sql(),
-                         "INSERT INTO woonplaats (id, naam, geometry) \
-VALUES (1197, 'Leeuwarden', \
+                         "INSERT INTO bag_woonplaats (id, naam, geometry) \
+VALUES ('1197', 'Leeuwarden', \
 GeomFromText('MultiPolygon(((180001.576 580918.246, \
 186053.377 581436.193, 186462.283 578137.688, 180328.700 577510.700, \
 180001.576 580918.246),(181733.025 579596.742, 181911.214 579873.924, \
@@ -225,7 +225,7 @@ Polygon((111768.489 494373.227, 111777.876 494372.193, 111792.324 494370.6, \
 
     def test_as_sql(self):
         self.assertEqual(self.ligplaats.as_sql(),
-                         "INSERT INTO ligplaats \
+                         "INSERT INTO bag_ligplaats \
 (id, id_hoofdadres, geometry) VALUES ('0479020000000242', \
 '0479200000077867', GeomFromText('Polygon((111768.489 494373.227, \
 111777.876 494372.193, 111792.324 494370.6, 111792.359 494370.824, \
@@ -283,7 +283,7 @@ Polygon((240292.542 568557.492, 240297.926 568548.571, 240309.307 568554.416, \
 
     def test_as_sql(self):
         self.assertEqual(self.standplaats.as_sql(),
-                         "INSERT INTO standplaats \
+                         "INSERT INTO bag_standplaats \
 (id, id_hoofdadres, geometry) VALUES ('1730030000000161', \
 '1730200000020033', GeomFromText('Polygon((240292.542 568557.492, \
 240297.926 568548.571, 240309.307 568554.416, 240304.385 568563.491, \
@@ -476,7 +476,7 @@ id_pand;geometry')
 
     def test_as_sql(self):
         self.assertEqual(self.verblijfsobject.as_sql(),
-                         "INSERT INTO verblijfsobject \
+                         "INSERT INTO bag_verblijfsobject \
 (id, gebruiksdoel, oppervlakte, id_hoofdadres, id_pand, geometry) \
 VALUES ('0003010000125985', 'woonfunctie', '69', '0003200000134057', \
 '0003100000122770', GeomFromText('Point(252767.348 593745.504)', 28992))")

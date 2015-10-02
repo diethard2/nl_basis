@@ -1,3 +1,22 @@
+"""
+/***************************************************************************
+ basis contains two classes B_Field and B_Object that together build up
+ the basis_object.
+ -------------------
+ begin                : 2015-07-10
+ copyright            : (C) 2015 by Diethard Jansen
+ email                : Diethard.Jansen at Gmail.com
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+"""
 from xml_utils import *
 import gml
 

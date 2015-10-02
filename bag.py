@@ -1,13 +1,14 @@
 """
 /***************************************************************************
- bag bevat alle bag objecten gedefinieerd in de xml-bestanden in
- hierarchische volgorde.
- - Woonplaats
- - OpenbareRuimte
- - Pand
- - Verblijfsobject, Standplaats, Ligplaats
- - Nummeraanduiding
- - GemeenteWoonplaats (koppeling tussen gemeente en woonplaatsen)
+ bag contains all bag objects defined in de xml-bestanden.
+ - bag_woonplaats (town/city)
+ - OpenbareRuimte (public area)
+ - Pand (building)
+ - bag_verblijfsobject (place in building to stay)
+ - bag_standplaats (place to put a trailer to live in)
+ - bag_ligplaats (place to anchor a boat to live in)
+ - Nummeraanduiding (house number)
+ - GemeenteWoonplaats (link between municipality and town)
  -------------------
  begin                : 2015-06-01
  copyright            : (C) 2015 by Diethard Jansen
@@ -28,7 +29,7 @@ from basis import *
 
 
 def woonplaats():
-    obj = B_Object("woonplaats")
+    obj = B_Object("bag_woonplaats")
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
     obj.add_field(B_Field("naam", "TEXT", "woonplaatsNaam"))
     obj.add_field(B_Field("geometry", "MULTIPOLYGON", "woonplaatsGeometrie",
@@ -40,7 +41,6 @@ def pand():
     obj = B_Object("pand")
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
     obj.add_field(B_Field("bouwjaar", "TEXT", "bouwjaar"))
-##    obj.add_field(B_Field("status", "TEXT", "pandstatus"))
     obj.add_field(B_Field("geometry", "POLYGON", "pandGeometrie",
                           to_object=gml.Polygon))
     obj.add_tags_to_process()
@@ -57,7 +57,7 @@ def openbare_ruimte():
     return obj
 
 def verblijfsobject():
-    obj = B_Object("verblijfsobject")
+    obj = B_Object("bag_verblijfsobject")
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
     obj.add_field(B_Field("gebruiksdoel", "TEXT",
                           "gebruiksdoelVerblijfsobject"))
@@ -73,7 +73,7 @@ def verblijfsobject():
     return obj
 
 def standplaats():
-    obj = B_Object("standplaats")
+    obj = B_Object("bag_standplaats")
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
     obj.add_field(B_Field("id_hoofdadres", "TEXT", "gerelateerdeAdressen",
                           to_object=BAG_Adressen))
@@ -83,7 +83,7 @@ def standplaats():
     return obj
 
 def ligplaats():
-    obj = B_Object("ligplaats")
+    obj = B_Object("bag_ligplaats")
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
     obj.add_field(B_Field("id_hoofdadres", "TEXT", "gerelateerdeAdressen",
                           to_object=BAG_Adressen))

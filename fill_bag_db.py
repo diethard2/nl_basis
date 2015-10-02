@@ -75,12 +75,16 @@ class FillDB:
                 continue
             line = self._clean_line(line)
             fields = line.split(',')
-            if fields[2] == '':
-                gemeentecode = fields[0]
-                name = fields[1]
-                sql = "INSERT INTO gemeente VALUES ('%s', '%s')" % \
-                      (gemeentecode, name)
-                self._cur.execute(sql)
+            '''Following if statement filtered out all municipalities that
+            do not exist anymore. Unfortunately in the BAG tables references
+            in the link table between old municipalities and towns/places still
+            exist so we add even the municipalities that ceased to exist.'''
+##            if fields[2] == '':
+            gemeentecode = fields[0]
+            name = fields[1]
+            sql = "INSERT INTO gemeente VALUES ('%s', '%s')" % \
+                  (gemeentecode, name)
+            self._cur.execute(sql)
         self._conn.commit()
 
     def process_bag_zipfile(self, root, name):

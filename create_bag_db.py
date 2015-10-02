@@ -1,7 +1,9 @@
 '''
 /***************************************************************************
 Create BAG DB
-Creates a spatialite database and the datamodel for BAG
+Creates a spatialite database and fills it from xml file holding all places to
+stay (buildings) of the Netherlands. Use this temporary until we make a more
+general class to import basis national geodata delivered in XML.
 
 begin                : 2015-06-19 
 copyright            : (C) 2015 by Diethard Jansen
@@ -66,12 +68,25 @@ def create_db(new_file):
     '''
     conn = dbapi2.connect(new_file)
     cur = conn.cursor()
-    sql = 'SELECT InitSpatialMetadata()'
-    rs = cur.execute(sql)
+    sql_statements = {'SELECT InitSpatialMetadata()'}
+    for sql_statement in sql_statements:
+        rs = cur.execute(sql_statement)
+    rs = cur.execute(sql_statement)
     conn.commit()
     rs.close()
     conn.close()
 
+def execute_sql(spatialite_db, sql_statements):
+    '''Opens a connection to spatialite database and
+    runs given sql_statements'''
+    conn = dbapi2.connect(spatialite_db)
+    cur = conn.cursor()
+    for sql_statement in sql_statements:
+        rs = cur.execute(sql_statement)
+    conn.commit()
+    rs.close()
+    conn.close()
+ 
 def create_datamodel(spatialite_db):
     '''creates a new BAG datamodel in given spatialite_db
     >>> import my_resources
@@ -81,18 +96,40 @@ def create_datamodel(spatialite_db):
     >>> test_db = my_resources.my_resource_file(my_test_db)
     >>> create_datamodel(test_db)
     '''
-    conn = dbapi2.connect(spatialite_db)
-    cur = conn.cursor()
-    sql_file = 'sql/gemeente.sql'#my_resources.my_resource_file(my_resources.sql_file)
+    sql_file = 'sql/gemeente.sql'
     sql_statements = bag.sql_creation_statements()
     sql_statements.extend(get_sql_statements(sql_file))
-    for sql_statement in sql_statements:
-        rs = cur.execute(sql_statement)
-    conn.commit()
-    rs.close()
-    conn.close()
-    
+    execute_sql(spatialite_db, sql_statements)
 
+def create_views(spatialite_db):
+    '''create views to provide better access to information'''
+    sql_file = 'sql/bag_views.sql'
+    sql_statements = get_sql_statements(sql_file)
+    execute_sql(spatialite_db, sql_statements)
+    
+def create_styles(spatialite_db):
+    '''create styles used in qgis for tables'''
+    sql_file = 'sql/bag_stijlen.sql'
+    sql_statements = get_sql_statements(sql_file)
+    execute_sql(spatialite_db, sql_statements)
+
+def flatten_tables(spatialite_db):
+    '''create flat tables from view for faster performance'''
+    sql_file = 'sql/bag_flat_tables.sql'
+    sql_statements = get_sql_statements(sql_file)
+    execute_sql(spatialite_db, sql_statements)
+
+def drop_tables(spatialite_db):
+    '''remove tables that are not neccesary anymore'''
+    sql_file = 'sql/bag_remove_tables.sql'
+    sql_statements = get_sql_statements(sql_file)
+    execute_sql(spatialite_db, sql_statements)
+
+def clip_zwartsluis(spatialite_db):
+    '''clip geodata from zwartsluis only'''
+    sql_file = 'sql/clip_zwartsluis.sql'
+    sql_statements = get_sql_statements(sql_file)
+    execute_sql(spatialite_db, sql_statements)
 
 if __name__ == "__main__":
     pass
