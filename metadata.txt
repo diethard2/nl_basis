@@ -1,0 +1,15 @@
+[general]
+name=Basis NL
+description=Extend processing framework to create and fill spatialite databases from zipped XML-files holding Basis Registration Geodata of the Netherlands. 
+category=Spatialite
+version=1.0
+qgisMinimumVersion=2.8
+author=GIS-hulp
+email=hulp@gis-hulp.nl
+tags=BAG,processing
+homepage=http://diethard2.github.io/nl_basis
+tracker=https://github.com/diethard2/nl_basis/issues
+repository=https://github.com/diethard2/nl_basis
+icon=basis_nl.png
+experimental=True
+deprecated=False
