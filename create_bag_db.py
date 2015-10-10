@@ -21,6 +21,7 @@ email                : diethard.jansen at gmail.com
 '''
 from pyspatialite import dbapi2
 import bag
+from os import path
 ##import my_resources
 
 def get_sql_statements(sql_file):
@@ -96,38 +97,38 @@ def create_datamodel(spatialite_db):
     >>> test_db = my_resources.my_resource_file(my_test_db)
     >>> create_datamodel(test_db)
     '''
-    sql_file = 'sql/gemeente.sql'
+    sql_file = path.join(path.dirname(__file__), 'sql/gemeente.sql')
     sql_statements = bag.sql_creation_statements()
     sql_statements.extend(get_sql_statements(sql_file))
     execute_sql(spatialite_db, sql_statements)
 
 def create_views(spatialite_db):
     '''create views to provide better access to information'''
-    sql_file = 'sql/bag_views.sql'
+    sql_file = path.join(path.dirname(__file__), 'sql/bag_views.sql')
     sql_statements = get_sql_statements(sql_file)
     execute_sql(spatialite_db, sql_statements)
     
 def create_styles(spatialite_db):
     '''create styles used in qgis for tables'''
-    sql_file = 'sql/bag_stijlen.sql'
+    sql_file = path.join(path.dirname(__file__), 'sql/bag_stijlen.sql')
     sql_statements = get_sql_statements(sql_file)
     execute_sql(spatialite_db, sql_statements)
 
 def flatten_tables(spatialite_db):
     '''create flat tables from view for faster performance'''
-    sql_file = 'sql/bag_flat_tables.sql'
+    sql_file = path.join(path.dirname(__file__), 'sql/bag_flat_tables.sql')
     sql_statements = get_sql_statements(sql_file)
     execute_sql(spatialite_db, sql_statements)
 
 def drop_tables(spatialite_db):
     '''remove tables that are not neccesary anymore'''
-    sql_file = 'sql/bag_remove_tables.sql'
+    sql_file = path.join(path.dirname(__file__), 'sql/bag_remove_tables.sql')
     sql_statements = get_sql_statements(sql_file)
     execute_sql(spatialite_db, sql_statements)
 
 def clip_zwartsluis(spatialite_db):
     '''clip geodata from zwartsluis only'''
-    sql_file = 'sql/clip_zwartsluis.sql'
+    sql_file = path.join(path.dirname(__file__), 'sql/clip_zwartsluis.sql')
     sql_statements = get_sql_statements(sql_file)
     execute_sql(spatialite_db, sql_statements)
 
