@@ -112,6 +112,10 @@ def create_styles(spatialite_db):
     '''create styles used in qgis for tables'''
     sql_file = path.join(path.dirname(__file__), 'sql/bag_stijlen.sql')
     sql_statements = get_sql_statements(sql_file)
+    # replace in sql statement the path to choosen input folder, otherwise styles wil not work!
+    new_dir = path.dirname(spatialite_db)
+    cur_dir = 'C:/data/bag'
+    sql_statements = [sql_statement.replace(cur_dir, new_dir) for sql_statement in sql_statements]
     execute_sql(spatialite_db, sql_statements)
 
 def flatten_tables(spatialite_db):
