@@ -50,7 +50,6 @@ def openbare_ruimte():
     obj = B_Object("openbare_ruimte")
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
     obj.add_field(B_Field("naam", "TEXT", "openbareRuimteNaam"))
-    obj.add_field(B_Field("type", "TEXT", "openbareRuimteType"))
     obj.add_field(B_Field("id_woonplaats", "TEXT", "gerelateerdeWoonplaats",
                           to_object=BAG_Id))
     obj.add_tags_to_process()

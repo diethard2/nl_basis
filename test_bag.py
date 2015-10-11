@@ -315,26 +315,25 @@ class OpenbareRuimteTestCase(unittest.TestCase):
 
     def test_field_names(self):
         self.assertEqual(self.openbare_ruimte.field_names(),
-                         ['id', 'naam', 'type', 'id_woonplaats'])
+                         ['id', 'naam', 'id_woonplaats'])
 
     def test_field_values(self):
         self.assertEqual(self.openbare_ruimte.field_values(),
-                         ['1895300000000478', 'Oosthofflaan',
-                          'Weg', '1893'])
+                         ['1895300000000478', 'Oosthofflaan', '1893'])
 
     def test_csv_header(self):
         self.assertEqual(self.openbare_ruimte.csv_header(),
-                         'id;naam;type;id_woonplaats')
+                         'id;naam;id_woonplaats')
 
     def test_as_csv(self):
         self.assertEqual(self.openbare_ruimte.as_csv(),
-                         '1895300000000478;Oosthofflaan;Weg;1893')
+                         '1895300000000478;Oosthofflaan;1893')
 
     def test_as_sql(self):
         self.assertEqual(self.openbare_ruimte.as_sql(),
                          "INSERT INTO openbare_ruimte \
-(id, naam, type, id_woonplaats) VALUES ('1895300000000478', 'Oosthofflaan', \
-'Weg', '1893')")
+(id, naam, id_woonplaats) VALUES ('1895300000000478', 'Oosthofflaan', \
+'1893')")
 
 _suite_openbare_ruimte = unittest.TestLoader().loadTestsFromTestCase(OpenbareRuimteTestCase)
 

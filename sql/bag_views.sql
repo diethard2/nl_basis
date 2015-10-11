@@ -28,7 +28,6 @@ DROP VIEW if exists view_adres
 --
 CREATE VIEW view_adres AS
 SELECT n.id AS id,
-    o.type AS type_openbare_ruimte,
     o.naam AS naam_openbare_ruimte,
     n.huisnummer AS huisnummer,
     n.postcode AS postcode,
@@ -40,7 +39,6 @@ DROP VIEW if exists view_verblijfsobject
 --
 CREATE VIEW view_verblijfsobject AS
 SELECT v.id AS id,
-       a.type_openbare_ruimte as type_openbare_ruimte,
        a.naam_openbare_ruimte as naam_openbare_ruimte,
        a.huisnummer as huisnummer,
        a.postcode as postcode,
@@ -63,7 +61,6 @@ DROP VIEW if exists view_ligplaats
 --
 CREATE VIEW view_ligplaats AS
 SELECT l.id AS id,
-       a.type_openbare_ruimte as type_openbare_ruimte,
        a.naam_openbare_ruimte as naam_openbare_ruimte,
        a.huisnummer as huisnummer,
        a.postcode as postcode,
@@ -83,7 +80,6 @@ DROP VIEW if exists view_standplaats
 --
 CREATE VIEW view_standplaats AS
 SELECT s.id AS id,
-       a.type_openbare_ruimte as type_openbare_ruimte,
        a.naam_openbare_ruimte as naam_openbare_ruimte,
        a.huisnummer as huisnummer,
        a.postcode as postcode,
