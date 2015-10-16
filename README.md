@@ -85,6 +85,10 @@ http://geodata.nationaalgeoregister.nl/inspireadressen/extract/inspireadressen.z
 Tabel33 Gemeententabel (gesorteerd op omschrijving).csv from:
 http://www.rijksdienstvooridentiteitsgegevens.nl/dsresource?objectid=16993&type=org
 
+For testing purposes there is a smaller inspireadressen.zip available that can be obtained using
+the next link:
+* https://drive.google.com/open?id=0B9t0iHYnTgnTM1R1QU1jbU1YZ2s
+
 Create a local repository using git of this project, start idle using
 run_idle.bat and open the python file test_all.py.
 Press F5 (Run) to get an initialised python-console and give following
