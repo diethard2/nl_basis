@@ -4,15 +4,64 @@
 </HEAD>
 <BODY>
 <H1>Create BAG database</H1>
-<p>
-First select the output folder where you want to create the bag database. If you select the
-folder C:\data\bag, the database C:\data\bag\bag.sqlite will be created.
+
+<H2>Description</H2>
+
+<P>It is used to process a big zip file that contains information off all
+  buildings of the Netherlands including addresses.<BR>
+  These xml-files can not be read into QGIS without processing them first.</P>
+
+<P>Currently this plugin is developed, tested and working on Windows OS only.<BR>
+  Soon it will be supported on Linux and OSX OS as well.
+</P>
+
+<P>
+  First download the following two files using the link and place only those files in the folder that will
+  be referred to as the input folder:
+  <ol>
+    <li>
+      <a href="http://geodata.nationaalgeoregister.nl/inspireadressen/extract/inspireadressen.zip">inspireadressen.zip</a><BR>
+      http://geodata.nationaalgeoregister.nl/inspireadressen/extract/inspireadressen.zip
+    </li>
+    <li>
+      <a href="http://www.rijksdienstvooridentiteitsgegevens.nl/dsresource?objectid=16993&type=org">Tabel33 Gemeententabel (gesorteerd op omschrijving).csv</a><BR>
+      http://www.rijksdienstvooridentiteitsgegevens.nl/dsresource?objectid=16993&type=org
+    </li>
+  </ol>
 </p>
-<p>Select the input folder, this folder will contain the two downloaded files that are used to read the information to create the BAG database.
+
+<p>The file inspireadressen.zip that is downloaded is a zip-file holding many XML files.
+  Never extract this zip file! It is a lot of data (about 60 GB) zipped it is only 1.4 GB. 
 </p>
-<p>The file that is downloaded is a zip-file holding many XML files. Never extract this zip file! It is a lot of data (about 60 GB) zipped it is only 1.4 GB. 
+
+<H2>Parameters</H2>
+
+<B><I>Input folder</I></B>
+<p>This folder should contain the two downloaded files that are used to read the information to
+  create the BAG database.
 </p>
-<p>Processing will take a long time. It is a lot of data to process and it can take several hours. The better the hardware, the faster the processing.
+
+<B><I>Output folder</I></B>
+<P>The output folder is where you want to create the bag database.<BR>
+  If you select the folder C:\data\bag, the database C:\data\bag\bag.sqlite will be created.
 </p>
+
+<H2>Additional information</H2>
+
+<p>Processing will take a long time. It is a lot of data to process and it can take several hours.
+  The better the hardware, the faster the processing.
+</p>
+
+<P>
+There are minimal requirement for the hardware.<BR>
+Make sure you have at least:
+<ul>
+  <li>20 GB diskspace available</li>
+  <li>4 GB of internal memory</li>
+</ul>
+</P>
+
+<P>Created by Diethard Jansen, <a href="http://www.GIS-hulp.nl">http://www.GIS-hulp.nl</a>, 2015</P>
+
 </BODY>
 </HTML>

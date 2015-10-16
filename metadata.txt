@@ -2,7 +2,7 @@
 name=Basis NL
 description=Extend processing framework to create and fill spatialite databases from zipped XML-files holding Basis Registration Geodata of the Netherlands. 
 category=Spatialite
-version=1.0
+version=0.5
 qgisMinimumVersion=2.8
 author=GIS-hulp
 email=hulp@gis-hulp.nl
