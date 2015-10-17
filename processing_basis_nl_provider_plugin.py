@@ -43,7 +43,7 @@ class Processing_basis_nl_provider_plugin:
         self.provider = Basis_nl_algorithm_provider()
 
     def initGui(self):
-        Processing.addProvider(self.provider)
+        Processing.addProvider(self.provider, True)
 
     def unload(self):
         Processing.removeProvider(self.provider)
