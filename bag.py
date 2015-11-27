@@ -60,7 +60,7 @@ def verblijfsobject():
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
     obj.add_field(B_Field("gebruiksdoel", "TEXT",
                           "gebruiksdoelVerblijfsobject"))
-    obj.add_field(B_Field("oppervlakte", "TEXT", "oppervlakteVerblijfsobject"))
+    obj.add_field(B_Field("oppervlakte", "INTEGER", "oppervlakteVerblijfsobject"))
     obj.add_field(B_Field("id_hoofdadres", "TEXT", "gerelateerdeAdressen",
                           to_object=BAG_Adressen))
     obj.add_field(B_Field("id_pand", "TEXT", "gerelateerdPand",
@@ -95,7 +95,10 @@ def nummeraanduiding():
     obj = B_Object("nummeraanduiding")
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
     obj.add_field(B_Field("postcode", "TEXT", "postcode"))
-    obj.add_field(B_Field("huisnummer", "TEXT", "huisnummer"))
+    obj.add_field(B_Field("huisnummer", "INTEGER", "huisnummer"))
+    obj.add_field(B_Field("huisletter", "TEXT", "huisletter"))
+    obj.add_field(B_Field("huisnummertoevoeging", "TEXT",
+                          "huisnummertoevoeging"))
     obj.add_field(B_Field("type", "TEXT", "typeAdresseerbaarObject",
                           is_mandatory=False))
     obj.add_field(B_Field("id_openbare_ruimte", "TEXT",

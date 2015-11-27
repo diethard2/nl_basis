@@ -360,28 +360,29 @@ class NummeraanduidingTestCase(unittest.TestCase):
 
     def test_field_names(self):
         self.assertEqual(self.nummeraanduiding.field_names(),
-                         ['id', 'postcode', 'huisnummer', 'type',
-                          'id_openbare_ruimte'])
+                         ['id', 'postcode', 'huisnummer', 'huisletter',
+                          'huisnummertoevoeging', 'type', 'id_openbare_ruimte'])
 
     def test_field_values(self):
         self.assertEqual(self.nummeraanduiding.field_values(),
-                         ['1987200000006076', '9651BG', '13',
+                         ['1987200000006076', '9651BG', '13', 'A', '1',
                           'Verblijfsobject', '1987300000000095'])
 
     def test_csv_header(self):
         self.assertEqual(self.nummeraanduiding.csv_header(),
-                         'id;postcode;huisnummer;type;id_openbare_ruimte')
+                         'id;postcode;huisnummer;huisletter;huisnummertoevoeging;type;\
+id_openbare_ruimte')
 
     def test_as_csv(self):
         self.assertEqual(self.nummeraanduiding.as_csv(),
-                         '1987200000006076;9651BG;13;Verblijfsobject;\
+                         '1987200000006076;9651BG;13;A;1;Verblijfsobject;\
 1987300000000095')
 
     def test_as_sql(self):
         self.assertEqual(self.nummeraanduiding.as_sql(),
                          "INSERT INTO nummeraanduiding \
-(id, postcode, huisnummer, type, id_openbare_ruimte) VALUES ('1987200000006076', \
-'9651BG', '13', 'Verblijfsobject', '1987300000000095')")
+(id, postcode, huisnummer, huisletter, huisnummertoevoeging, type, id_openbare_ruimte) \
+VALUES ('1987200000006076', '9651BG', 13, 'A', '1', 'Verblijfsobject', '1987300000000095')")
 
 _suite_nummeraanduiding = unittest.TestLoader().loadTestsFromTestCase(NummeraanduidingTestCase)
 
@@ -477,7 +478,7 @@ id_pand;geometry')
         self.assertEqual(self.verblijfsobject.as_sql(),
                          "INSERT INTO bag_verblijfsobject \
 (id, gebruiksdoel, oppervlakte, id_hoofdadres, id_pand, geometry) \
-VALUES ('0003010000125985', 'woonfunctie', '69', '0003200000134057', \
+VALUES ('0003010000125985', 'woonfunctie', 69, '0003200000134057', \
 '0003100000122770', GeomFromText('Point(252767.348 593745.504)', 28992))")
 
 _suite_verblijfsobject = unittest.TestLoader().loadTestsFromTestCase(VerblijfsobjectTestCase)

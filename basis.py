@@ -121,7 +121,7 @@ to get value frome")
             
     def sql_value(self):
         value = self.value
-        if self.type == 'TEXT':
+        if self.type == 'TEXT' and value is not None:
             value = value.replace("'", "''")
         return self.__sql_template % value
         
