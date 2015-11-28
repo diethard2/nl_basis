@@ -261,9 +261,11 @@ class B_Object(B_XmlProcessor):
         """Returns sql statement to create spatial index."""
         return "SELECT CreateSpatialIndex('%s', 'geometry')" % self.name
 
-    
-        
-            
-            
-            
-        
+    def is_active(self):
+        """returns true if this object is active and should be added
+        to spatialite database."""
+        is_active = True
+        inactive_field = self.tag2field["aanduidingRecordInactief"]
+        if inactive_field is not None:
+            is_active = inactive_field.value != 'J'
+        return is_active

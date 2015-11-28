@@ -44,30 +44,31 @@ class WoonplaatsTestCase(unittest.TestCase):
 
     def test_field_names(self):
         self.assertEqual(self.woonplaats.field_names(),
-                         ['id', 'naam', 'geometry'])
+                         ['id', 'naam', 'inactief', 'geometry'])
 
     def test_field_values(self):
         self.assertEqual(self.woonplaats.field_values(),
-                         ['1000', 'Hoogerheide',
+                         ['1000', 'Hoogerheide', 'N',
                           'MultiPolygon(((80089.798 383288.255, \
 81816.255 383744.931, 82005.608 381650.906, 80769.242 381394.722, \
 80089.798 383288.255),(80758.104 383310.532, 81704.871 383455.332, \
 81348.441 382809.303, 80802.658 382820.441, 80758.104 383310.532)))'])
 
     def test_csv_header(self):
-        self.assertEqual(self.woonplaats.csv_header(), 'id;naam;geometry')
+        self.assertEqual(self.woonplaats.csv_header(), 'id;naam;inactief;\
+geometry')
 
     def test_as_csv(self):
         self.assertEqual(self.woonplaats.as_csv(),
-                         '1000;Hoogerheide;MultiPolygon(((80089.798 383288.255, \
+                         '1000;Hoogerheide;N;MultiPolygon(((80089.798 383288.255, \
 81816.255 383744.931, 82005.608 381650.906, 80769.242 381394.722, \
 80089.798 383288.255),(80758.104 383310.532, 81704.871 383455.332, \
 81348.441 382809.303, 80802.658 382820.441, 80758.104 383310.532)))')
 
     def test_as_sql(self):
         self.assertEqual(self.woonplaats.as_sql(),
-                         "INSERT INTO bag_woonplaats (id, naam, geometry) \
-VALUES ('1000', 'Hoogerheide', \
+                         "INSERT INTO bag_woonplaats (id, naam, inactief, \
+geometry) VALUES ('1000', 'Hoogerheide', 'N', \
 GeomFromText('MultiPolygon(((80089.798 383288.255, 81816.255 383744.931, \
 82005.608 381650.906, 80769.242 381394.722, 80089.798 383288.255),\
 (80758.104 383310.532, 81704.871 383455.332, 81348.441 382809.303, \
@@ -99,7 +100,7 @@ class WoonplaatsMultipolygonTestCase(unittest.TestCase):
 
     def test_as_csv(self):
         self.assertEqual(self.woonplaats.as_csv(),
-                         '1197;Leeuwarden;MultiPolygon(((180001.576 580918.246, \
+                         '1197;Leeuwarden;N;MultiPolygon(((180001.576 580918.246, \
 186053.377 581436.193, 186462.283 578137.688, 180328.700 577510.700, \
 180001.576 580918.246),(181733.025 579596.742, 181911.214 579873.924, \
 182049.805 579576.943, 181733.025 579596.742),(185257.193 579586.843, \
@@ -109,8 +110,8 @@ class WoonplaatsMultipolygonTestCase(unittest.TestCase):
 
     def test_as_sql(self):
         self.assertEqual(self.woonplaats.as_sql(),
-                         "INSERT INTO bag_woonplaats (id, naam, geometry) \
-VALUES ('1197', 'Leeuwarden', \
+                         "INSERT INTO bag_woonplaats (id, naam, inactief, \
+geometry) VALUES ('1197', 'Leeuwarden', 'N', \
 GeomFromText('MultiPolygon(((180001.576 580918.246, \
 186053.377 581436.193, 186462.283 578137.688, 180328.700 577510.700, \
 180001.576 580918.246),(181733.025 579596.742, 181911.214 579873.924, \
@@ -144,22 +145,22 @@ class PandTestCase(unittest.TestCase):
 
     def test_field_names(self):
         self.assertEqual(self.pand.field_names(),
-                         ['id', 'bouwjaar', 'geometry'])
+                         ['id', 'bouwjaar', 'inactief', 'geometry'])
 
     def test_field_values(self):
         self.assertEqual(self.pand.field_values(),
-                         ['1987100000011601', '2012', 
+                         ['1987100000011601', '2012', 'N',
                           'Polygon((253680.97 576716.1, 253679.11 576736.32, \
 253667.39 576735.3, 253669.21 576715.11, 253680.97 576716.1),\
 (253679.875 576724.723, 253671.753 576723.992, 253671.406 576727.849, \
 253679.528 576728.58, 253679.875 576724.723))'])
 
     def test_csv_header(self):
-        self.assertEqual(self.pand.csv_header(), 'id;bouwjaar;geometry')
+        self.assertEqual(self.pand.csv_header(), 'id;bouwjaar;inactief;geometry')
 
     def test_as_csv(self):
         self.assertEqual(self.pand.as_csv(),
-                         '1987100000011601;2012;\
+                         '1987100000011601;2012;N;\
 Polygon((253680.97 576716.1, 253679.11 576736.32, 253667.39 576735.3, \
 253669.21 576715.11, 253680.97 576716.1),(253679.875 576724.723, \
 253671.753 576723.992, 253671.406 576727.849, 253679.528 576728.58, \
@@ -168,8 +169,8 @@ Polygon((253680.97 576716.1, 253679.11 576736.32, 253667.39 576735.3, \
     def test_as_sql(self):
         self.assertEqual(self.pand.as_sql(),
                          "INSERT INTO pand \
-(id, bouwjaar, geometry) VALUES ('1987100000011601', \
-'2012', GeomFromText('Polygon((253680.97 576716.1, \
+(id, bouwjaar, inactief, geometry) VALUES ('1987100000011601', \
+'2012', 'N', GeomFromText('Polygon((253680.97 576716.1, \
 253679.11 576736.32, 253667.39 576735.3, 253669.21 576715.11, \
 253680.97 576716.1),(253679.875 576724.723, 253671.753 576723.992, \
 253671.406 576727.849, 253679.528 576728.58, 253679.875 576724.723))', 28992))")
@@ -199,11 +200,11 @@ class LigplaatsTestCase(unittest.TestCase):
 
     def test_field_names(self):
         self.assertEqual(self.ligplaats.field_names(),
-                         ['id', 'id_hoofdadres', 'geometry'])
+                         ['id', 'id_hoofdadres', 'inactief', 'geometry'])
 
     def test_field_values(self):
         self.assertEqual(self.ligplaats.field_values(),
-                         ['0479020000000242', '0479200000077867',
+                         ['0479020000000242', '0479200000077867', 'N',
                           'Polygon((111768.489 494373.227, \
 111777.876 494372.193, 111792.324 494370.6, 111792.359 494370.824, \
 111793.299 494376.881, 111795.039 494382.906, 111796.098 494386.936, \
@@ -212,11 +213,12 @@ class LigplaatsTestCase(unittest.TestCase):
 111768.489 494373.227))'])
 
     def test_csv_header(self):
-        self.assertEqual(self.ligplaats.csv_header(), 'id;id_hoofdadres;geometry')
+        self.assertEqual(self.ligplaats.csv_header(), 'id;id_hoofdadres;\
+inactief;geometry')
 
     def test_as_csv(self):
         self.assertEqual(self.ligplaats.as_csv(),
-                         '0479020000000242;0479200000077867;\
+                         '0479020000000242;0479200000077867;N;\
 Polygon((111768.489 494373.227, 111777.876 494372.193, 111792.324 494370.6, \
 111792.359 494370.824, 111793.299 494376.881, 111795.039 494382.906, \
 111796.098 494386.936, 111796.657 494391.202, 111796.698 494394.091, \
@@ -226,8 +228,8 @@ Polygon((111768.489 494373.227, 111777.876 494372.193, 111792.324 494370.6, \
     def test_as_sql(self):
         self.assertEqual(self.ligplaats.as_sql(),
                          "INSERT INTO bag_ligplaats \
-(id, id_hoofdadres, geometry) VALUES ('0479020000000242', \
-'0479200000077867', GeomFromText('Polygon((111768.489 494373.227, \
+(id, id_hoofdadres, inactief, geometry) VALUES ('0479020000000242', \
+'0479200000077867', 'N', GeomFromText('Polygon((111768.489 494373.227, \
 111777.876 494372.193, 111792.324 494370.6, 111792.359 494370.824, \
 111793.299 494376.881, 111795.039 494382.906, 111796.098 494386.936, \
 111796.657 494391.202, 111796.698 494394.091, 111796.701 494394.332, \
@@ -263,29 +265,30 @@ class StandplaatsTestCase(unittest.TestCase):
 
     def test_field_names(self):
         self.assertEqual(self.standplaats.field_names(),
-                         ['id', 'id_hoofdadres', 'geometry'])
+                         ['id', 'id_hoofdadres', 'inactief', 'geometry'])
 
     def test_field_values(self):
         self.assertEqual(self.standplaats.field_values(),
-                         ['1730030000000161', '1730200000020033',
+                         ['1730030000000161', '1730200000020033', 'N',
                           'Polygon((240292.542 568557.492, \
 240297.926 568548.571, 240309.307 568554.416, 240304.385 568563.491, \
 240292.542 568557.492))'])
 
     def test_csv_header(self):
-        self.assertEqual(self.standplaats.csv_header(), 'id;id_hoofdadres;geometry')
+        self.assertEqual(self.standplaats.csv_header(), 'id;id_hoofdadres;\
+inactief;geometry')
 
     def test_as_csv(self):
         self.assertEqual(self.standplaats.as_csv(),
-                         '1730030000000161;1730200000020033;\
+                         '1730030000000161;1730200000020033;N;\
 Polygon((240292.542 568557.492, 240297.926 568548.571, 240309.307 568554.416, \
 240304.385 568563.491, 240292.542 568557.492))')
 
     def test_as_sql(self):
         self.assertEqual(self.standplaats.as_sql(),
                          "INSERT INTO bag_standplaats \
-(id, id_hoofdadres, geometry) VALUES ('1730030000000161', \
-'1730200000020033', GeomFromText('Polygon((240292.542 568557.492, \
+(id, id_hoofdadres, inactief, geometry) VALUES ('1730030000000161', \
+'1730200000020033', 'N', GeomFromText('Polygon((240292.542 568557.492, \
 240297.926 568548.571, 240309.307 568554.416, 240304.385 568563.491, \
 240292.542 568557.492))', 28992))")
 
@@ -315,25 +318,25 @@ class OpenbareRuimteTestCase(unittest.TestCase):
 
     def test_field_names(self):
         self.assertEqual(self.openbare_ruimte.field_names(),
-                         ['id', 'naam', 'id_woonplaats'])
+                         ['id', 'naam', 'id_woonplaats', 'inactief'])
 
     def test_field_values(self):
         self.assertEqual(self.openbare_ruimte.field_values(),
-                         ['1895300000000478', 'Oosthofflaan', '1893'])
+                         ['1895300000000478', 'Oosthofflaan', '1893', 'N'])
 
     def test_csv_header(self):
         self.assertEqual(self.openbare_ruimte.csv_header(),
-                         'id;naam;id_woonplaats')
+                         'id;naam;id_woonplaats;inactief')
 
     def test_as_csv(self):
         self.assertEqual(self.openbare_ruimte.as_csv(),
-                         '1895300000000478;Oosthofflaan;1893')
+                         '1895300000000478;Oosthofflaan;1893;N')
 
     def test_as_sql(self):
         self.assertEqual(self.openbare_ruimte.as_sql(),
                          "INSERT INTO openbare_ruimte \
-(id, naam, id_woonplaats) VALUES ('1895300000000478', 'Oosthofflaan', \
-'1893')")
+(id, naam, id_woonplaats, inactief) VALUES ('1895300000000478', \
+'Oosthofflaan', '1893', 'N')")
 
 _suite_openbare_ruimte = unittest.TestLoader().loadTestsFromTestCase(OpenbareRuimteTestCase)
 
@@ -361,28 +364,30 @@ class NummeraanduidingTestCase(unittest.TestCase):
     def test_field_names(self):
         self.assertEqual(self.nummeraanduiding.field_names(),
                          ['id', 'postcode', 'huisnummer', 'huisletter',
-                          'huisnummertoevoeging', 'type', 'id_openbare_ruimte'])
+                          'huisnummertoevoeging', 'type', 'id_openbare_ruimte',
+                          'inactief'])
 
     def test_field_values(self):
         self.assertEqual(self.nummeraanduiding.field_values(),
                          ['1987200000006076', '9651BG', '13', 'A', '1',
-                          'Verblijfsobject', '1987300000000095'])
+                          'Verblijfsobject', '1987300000000095', 'N'])
 
     def test_csv_header(self):
         self.assertEqual(self.nummeraanduiding.csv_header(),
                          'id;postcode;huisnummer;huisletter;huisnummertoevoeging;type;\
-id_openbare_ruimte')
+id_openbare_ruimte;inactief')
 
     def test_as_csv(self):
         self.assertEqual(self.nummeraanduiding.as_csv(),
                          '1987200000006076;9651BG;13;A;1;Verblijfsobject;\
-1987300000000095')
+1987300000000095;N')
 
     def test_as_sql(self):
         self.assertEqual(self.nummeraanduiding.as_sql(),
                          "INSERT INTO nummeraanduiding \
-(id, postcode, huisnummer, huisletter, huisnummertoevoeging, type, id_openbare_ruimte) \
-VALUES ('1987200000006076', '9651BG', 13, 'A', '1', 'Verblijfsobject', '1987300000000095')")
+(id, postcode, huisnummer, huisletter, huisnummertoevoeging, type, \
+id_openbare_ruimte, inactief) VALUES ('1987200000006076', '9651BG', 13, 'A', \
+'1', 'Verblijfsobject', '1987300000000095', 'N')")
 
 _suite_nummeraanduiding = unittest.TestLoader().loadTestsFromTestCase(NummeraanduidingTestCase)
 
@@ -456,30 +461,30 @@ class VerblijfsobjectTestCase(unittest.TestCase):
     def test_field_names(self):
         self.assertEqual(self.verblijfsobject.field_names(),
                          ['id', 'gebruiksdoel', 'oppervlakte',
-                          'id_hoofdadres', 'id_pand', 'geometry'])
+                          'id_hoofdadres', 'id_pand', 'inactief', 'geometry'])
 
     def test_field_values(self):
         self.assertEqual(self.verblijfsobject.field_values(),
                          ['0003010000125985', 'woonfunctie', '69',
                           '0003200000134057', '0003100000122770',
-                          'Point(252767.348 593745.504)'])
+                          'N', 'Point(252767.348 593745.504)'])
 
     def test_csv_header(self):
         self.assertEqual(self.verblijfsobject.csv_header(),
                          'id;gebruiksdoel;oppervlakte;id_hoofdadres;\
-id_pand;geometry')
+id_pand;inactief;geometry')
 
     def test_as_csv(self):
         self.assertEqual(self.verblijfsobject.as_csv(),
                          '0003010000125985;woonfunctie;69;0003200000134057;\
-0003100000122770;Point(252767.348 593745.504)')
+0003100000122770;N;Point(252767.348 593745.504)')
 
     def test_as_sql(self):
         self.assertEqual(self.verblijfsobject.as_sql(),
                          "INSERT INTO bag_verblijfsobject \
-(id, gebruiksdoel, oppervlakte, id_hoofdadres, id_pand, geometry) \
+(id, gebruiksdoel, oppervlakte, id_hoofdadres, id_pand, inactief, geometry) \
 VALUES ('0003010000125985', 'woonfunctie', 69, '0003200000134057', \
-'0003100000122770', GeomFromText('Point(252767.348 593745.504)', 28992))")
+'0003100000122770', 'N', GeomFromText('Point(252767.348 593745.504)', 28992))")
 
 _suite_verblijfsobject = unittest.TestLoader().loadTestsFromTestCase(VerblijfsobjectTestCase)
 

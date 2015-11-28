@@ -32,6 +32,7 @@ def woonplaats():
     obj = B_Object("bag_woonplaats")
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
     obj.add_field(B_Field("naam", "TEXT", "woonplaatsNaam"))
+    obj.add_field(B_Field("inactief", "TEXT", "aanduidingRecordInactief"))
     obj.add_field(B_Field("geometry", "MULTIPOLYGON", "woonplaatsGeometrie",
                           to_object=gml.MultiPolygon))
     obj.add_tags_to_process()
@@ -41,6 +42,7 @@ def pand():
     obj = B_Object("pand")
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
     obj.add_field(B_Field("bouwjaar", "TEXT", "bouwjaar"))
+    obj.add_field(B_Field("inactief", "TEXT", "aanduidingRecordInactief"))
     obj.add_field(B_Field("geometry", "POLYGON", "pandGeometrie",
                           to_object=gml.Polygon))
     obj.add_tags_to_process()
@@ -52,6 +54,7 @@ def openbare_ruimte():
     obj.add_field(B_Field("naam", "TEXT", "openbareRuimteNaam"))
     obj.add_field(B_Field("id_woonplaats", "TEXT", "gerelateerdeWoonplaats",
                           to_object=BAG_Id))
+    obj.add_field(B_Field("inactief", "TEXT", "aanduidingRecordInactief"))
     obj.add_tags_to_process()
     return obj
 
@@ -65,6 +68,7 @@ def verblijfsobject():
                           to_object=BAG_Adressen))
     obj.add_field(B_Field("id_pand", "TEXT", "gerelateerdPand",
                           to_object=BAG_Id))
+    obj.add_field(B_Field("inactief", "TEXT", "aanduidingRecordInactief"))
     obj.add_field(B_Field("geometry", "POINT", "verblijfsobjectGeometrie",
                           to_object=gml.Point))
     
@@ -76,6 +80,7 @@ def standplaats():
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
     obj.add_field(B_Field("id_hoofdadres", "TEXT", "gerelateerdeAdressen",
                           to_object=BAG_Adressen))
+    obj.add_field(B_Field("inactief", "TEXT", "aanduidingRecordInactief"))
     obj.add_field(B_Field("geometry", "POLYGON", "standplaatsGeometrie",
                           to_object=gml.Polygon))
     obj.add_tags_to_process()
@@ -86,6 +91,7 @@ def ligplaats():
     obj.add_field(B_Field("id", "TEXT", "identificatie", is_key_field=True))
     obj.add_field(B_Field("id_hoofdadres", "TEXT", "gerelateerdeAdressen",
                           to_object=BAG_Adressen))
+    obj.add_field(B_Field("inactief", "TEXT", "aanduidingRecordInactief"))
     obj.add_field(B_Field("geometry", "POLYGON", "ligplaatsGeometrie",
                           to_object=gml.Polygon))
     obj.add_tags_to_process()
@@ -103,6 +109,7 @@ def nummeraanduiding():
                           is_mandatory=False))
     obj.add_field(B_Field("id_openbare_ruimte", "TEXT",
                           "gerelateerdeOpenbareRuimte", to_object=BAG_Id))
+    obj.add_field(B_Field("inactief", "TEXT", "aanduidingRecordInactief"))
     obj.add_tags_to_process()
     return obj
 

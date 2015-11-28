@@ -148,13 +148,14 @@ class FillDB:
                     basis_object = bag.basis_objects[tag]
             basis_object.init_values()
             basis_object.process(i_elem)
-            sql = basis_object.as_sql()
-            try:
-                self._cur.execute(sql)
-            except dbapi2.IntegrityError:
-                # objects with unique ids are encountered more often in
-                # xml files delivered. Just ignore..
-                pass
+            if basis_object.is_active():
+                sql = basis_object.as_sql()
+                try:
+                    self._cur.execute(sql)
+                except dbapi2.IntegrityError:
+                    # objects with unique ids are encountered more often in
+                    # xml files delivered. Just ignore..
+                    pass
             self._xml_object_count += 1
             i_elem.clear()
             if self._xml_object_count % 100 is 0:
