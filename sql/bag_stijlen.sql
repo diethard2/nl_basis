@@ -1,3 +1,5 @@
+CREATE TABLE layer_styles(id INTEGER PRIMARY KEY AUTOINCREMENT,f_table_catalog varchar(256),f_table_schema varchar(256),f_table_name varchar(256),f_geometry_column varchar(256),styleName varchar(30),styleQML text,styleSLD text,useAsDefault boolean,description text,owner varchar(30),ui text,update_time timestamp DEFAULT CURRENT_TIMESTAMP)
+--
 INSERT INTO layer_styles VALUES(1,'C:/data/bag/bag.sqlite','','woonplaats','geometry','woonplaats','<!DOCTYPE qgis PUBLIC ''http://mrcc.com/qgis.dtd'' ''SYSTEM''>
 <qgis version="2.8.1-Wien" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
  <edittypes>
