@@ -83,7 +83,7 @@ inspireadressen.zip from:
 http://geodata.nationaalgeoregister.nl/inspireadressen/extract/inspireadressen.zip
 
 Tabel33 Gemeententabel (gesorteerd op omschrijving).csv from:
-http://www.rijksdienstvooridentiteitsgegevens.nl/dsresource?objectid=16993&type=org
+http://www.bprbzk.nl/dsresource?objectid=16993&type=org
 
 For testing purposes there is a smaller inspireadressen.zip available that can be obtained using the next link to a google drive folder:
 * https://drive.google.com/open?id=0B9t0iHYnTgnTWkFTWHJFMXRqN3M
