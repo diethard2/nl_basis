@@ -1,9 +1,9 @@
 [general]
 name=Basis NL
-description=Extend processing framework to create and fill spatialite databases from zipped XML-files holding Basis Registration Geodata of the Netherlands.
+description=Extends processing framework to create and fill spatialite databases from zipped XML-files holding Basis Registration Geodata of the Netherlands.
 about=Processes big zipped XML-files with free geodata that can not be imported directly in QGIS, it needs to be processed first. This version contains only 1 algorithm to process BAG (buildings and addresses). Works currently only on Windows OS. More algorithms will be provided soon to import other Basis Registration Geodata and do some post-processing as well.
 category=Spatialite
-version=0.5.1
+version=0.6
 qgisMinimumVersion=2.8
 author=GIS-hulp
 email=hulp@gis-hulp.nl
@@ -14,3 +14,8 @@ repository=https://github.com/diethard2/nl_basis
 icon=basis_nl.png
 experimental=True
 deprecated=False
+
+changelog:
+    0.6     (12-2015) include fields huisletter and huisnummertoevoeging, improved labels, applied point displacement rendering style for verblijfsobject to show where these have been placed on top of eachother and filter on active records only
+    0.5.1   (10-2015) fix to make it immediately available in processing toolbox after install 
+    0.5     (10-2015) initial version

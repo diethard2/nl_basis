@@ -52,23 +52,54 @@
   The better the hardware, the faster the processing.
 </p>
 
+<H3>After loading</H3>
+
+<p>Using QGIS relations, you can set up a relation between pand and verblijfsplaats.
+<ul>
+<li>In QGIS select Project --> Project Properties...</li>
+<li>Select on the left side relation and add a relation using the button <b>[Add Relation]</b></li>
+</ul>
+</p>
+
+<p>Provide following values in New relation dialog:
+<ul>
+<li>* Name: Adressen</li>
+<li>* Referencing Layer (Child): verblijfplaats</li>
+<li>* Referencing Field: id_pand</li>
+<li>* Referenced Layer (Parent): pand</li>
+<li>* Referenced Field: id</li>
+</ul>
+</p>
+
+<H3>On styles</H3>
+
+<p>When you rename or move the created spatialite database to another location, 
+be aware that loaded styles are not applied anymore. You can easily solve 
+this, see: http://www.qgis.nl/2015/10/27/spatialite-en-verdwenen-stijlen/?lang=en
+</p>
+
+
+<H3>Requirements</H3>
 <P>
 There are minimal requirement for the hardware.<BR>
 Make sure you have at least:
 <ul>
   <li>20 GB diskspace available</li>
-  <li>4 GB of internal memory</li>
+  <li>3 GB of internal memory</li>
 </ul>
 </P>
 
+<h3>Test resources</h3>
 <P>
-  For testing purposes there is a smaller inspireadressen.zip available that
+  For test purposes there is a smaller <i>inspireadressen.zip</i> available that
   can be obtained using the next link referring to a public google drive
   folder:<BR>
   https://drive.google.com/open?id=0B9t0iHYnTgnTWkFTWHJFMXRqN3M
 </P>
-
-<P>Created by Diethard Jansen, <a href="http://www.GIS-hulp.nl">http://www.GIS-hulp.nl</a>, 2015</P>
+<p>
+  An example of output is available on: http://qgis.nl/zwartsluis.zip
+</p>
+<P>Created by Diethard Jansen, http://www.GIS-hulp.nl, 2015</P>
 
 </BODY>
 </HTML>
