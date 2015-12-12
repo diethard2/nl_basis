@@ -29,7 +29,7 @@ import os
 from PyQt4.QtGui import *
 from processing.core.AlgorithmProvider import AlgorithmProvider
 from processing.core.ProcessingConfig import Setting, ProcessingConfig
-from nl_basis.bag_algorithm import Bag_algorithm
+from nl_basis.algorithms.bag_algorithm import Bag_algorithm
 
 
 class Basis_nl_algorithm_provider(AlgorithmProvider):
@@ -85,7 +85,7 @@ class Basis_nl_algorithm_provider(AlgorithmProvider):
     def getIcon(self):
         """We return the default icon.
         """
-        return QIcon(os.path.dirname(__file__) + '/basis_nl.png')
+        return QIcon(os.path.dirname(__file__) + '/../basis_nl.png')
 
     def _loadAlgorithms(self):
         """Here we fill the list of algorithms in self.algs.

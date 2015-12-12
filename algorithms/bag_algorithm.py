@@ -36,8 +36,8 @@ from processing.core.outputs import OutputVector
 from processing.core.ProcessingLog import ProcessingLog
 #from processing.tools import dataobjects, vector
 
-import create_bag_db
-import fill_bag_db
+import nl_basis.create_bag_db
+import nl_basis.fill_bag_db
 import time
 
 class Bag_algorithm(GeoAlgorithm):
@@ -71,7 +71,7 @@ class Bag_algorithm(GeoAlgorithm):
         self.__bag_db = bag_db
 
     def getIcon(self):
-        return QIcon(os.path.dirname(__file__) + '/basis_nl.png')
+        return QIcon(os.path.dirname(__file__) + '/../basis_nl.png')
 
     def help(self):
         """Returns the help with the description of this algorithm.
@@ -137,7 +137,7 @@ class Bag_algorithm(GeoAlgorithm):
       
         ProcessingLog.addToLog(ProcessingLog.LOG_INFO, "Started creating BAG database")
         bag_db = self.get_bag_db()
-        create_bag_db.create_db(bag_db)
+        nl_basis.create_bag_db.create_db(bag_db)
         # give process 5 seconds to finish.. 
         time.sleep(5)
         progress.setPercentage(3)
@@ -152,7 +152,7 @@ class Bag_algorithm(GeoAlgorithm):
         
         progress.setText("Create initial datamodel BAG database")
         bag_db = self.get_bag_db()
-        create_bag_db.create_datamodel(bag_db)
+        nl_basis.create_bag_db.create_datamodel(bag_db)
         progress.setPercentage(5)
         progress.setText("Datamodel BAG database is created!")
 
@@ -160,7 +160,7 @@ class Bag_algorithm(GeoAlgorithm):
         progress.setText("Start to read data in input folder and fill BAG database")
         input_folder = self.getParameterValue(self.INPUT_FOLDER)
         bag_db = self.get_bag_db()
-        filler = fill_bag_db.FillDB(bag_db, input_folder)
+        filler = nl_basis.fill_bag_db.FillDB(bag_db, input_folder)
         filler.run()
         progress.setPercentage(60)
         progress.setText("All data is read into BAG database")
@@ -168,28 +168,28 @@ class Bag_algorithm(GeoAlgorithm):
     def create_views(self, progress):
         progress.setText("Start to create spatial views for better access")
         bag_db = self.get_bag_db()
-        create_bag_db.create_views(bag_db)
+        nl_basis.create_bag_db.create_views(bag_db)
         progress.setPercentage(65)
         progress.setText("Created spatial views")
 
     def flatten_tables(self, progress):
         """Create physical tables from spatial views to improve performance."""
         bag_db = self.get_bag_db()
-        create_bag_db.flatten_tables(bag_db)
+        nl_basis.create_bag_db.flatten_tables(bag_db)
         progress.setPercentage(90)
         progress.setText("Physical tables have been created from spatial views")
 
     def drop_views_and_tables(self, progress):
         """Drop the views and tables that are not necessary anymore"""
         bag_db = self.get_bag_db()
-        create_bag_db.drop_tables(bag_db)
+        nl_basis.create_bag_db.drop_tables(bag_db)
         progress.setPercentage(95)
         progress.setText("Unneccesary tables and views are removed from BAG database")
 
     def create_styles(self, progress):
         """Insert styles in the BAG database that will be used by QGIS"""
         bag_db = self.get_bag_db()
-        create_bag_db.create_styles(bag_db)
+        nl_basis.create_bag_db.create_styles(bag_db)
         progress.setText("Default styles are inserted in BAG database")
        
               
