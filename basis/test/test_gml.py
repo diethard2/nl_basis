@@ -16,8 +16,8 @@
  *                                                                         *
  ***************************************************************************/
 """
-import gml
-from xml_utils import *
+import basis.gml
+from basis.xml_utils import *
 import xml.etree.ElementTree as ET
 import unittest
 
@@ -31,10 +31,10 @@ class PointTestCase(unittest.TestCase):
         The geometry actually consists of an gml point element which includes
         an x, y and z coordinate.
         """
-        xml_file = open("test/verblijfsobject.xml")
+        xml_file = open("data/verblijfsobject.xml")
         root = ET.fromstring(xml_file.read())
         self.xml_geometry = find_xml_with_tag(root, "verblijfsobjectGeometrie", None)
-        self.point = gml.Point()
+        self.point = basis.test.gml.Point()
         self.point.process(self.xml_geometry)
         xml_file.close()        
 
@@ -62,10 +62,10 @@ class PolygonTestCase(unittest.TestCase):
         The geometry actually consists of an gml polygon element which includes
         an outer and inner ring.
         """
-        xml_file = open("test/woonplaats.xml")
+        xml_file = open("data/woonplaats.xml")
         root = ET.fromstring(xml_file.read())
         self.xml_geometry = find_xml_with_tag(root, "woonplaatsGeometrie", None)
-        self.polygon = gml.Polygon()
+        self.polygon = basis.gml.Polygon()
         self.polygon.process(self.xml_geometry)
         xml_file.close()        
 
@@ -83,7 +83,7 @@ class PolygonTestCase(unittest.TestCase):
 81348.441 382809.303, 80802.658 382820.441, 80758.104 383310.532))')
 
     def test_multipolygon(self):
-        multipolygon = gml.MultiPolygon()
+        multipolygon = basis.gml.MultiPolygon()
         multipolygon.process(self.xml_geometry)
         self.assertEqual(multipolygon.as_wkt(),
                          'MultiPolygon(((80089.798 383288.255, \
@@ -107,10 +107,10 @@ class MultiPolygonTestCase(unittest.TestCase):
         The geometry actually consists of an gml polygon element which includes
         an outer and inner ring.
         """
-        xml_file = open("test/woonplaats_multipolygon.xml")
+        xml_file = open("data/woonplaats_multipolygon.xml")
         root = ET.fromstring(xml_file.read())
         self.xml_geometry = find_xml_with_tag(root, "woonplaatsGeometrie", None)
-        self.multipolygon = gml.MultiPolygon()
+        self.multipolygon = basis.gml.MultiPolygon()
         self.multipolygon.process(self.xml_geometry)
         xml_file.close()        
 
@@ -125,7 +125,7 @@ class MultiPolygonTestCase(unittest.TestCase):
 184445.447 576914.019, 184247.460 577379.288)))')
 
     def test_polygon(self):
-        polygon = gml.Polygon()
+        polygon = basis.gml.Polygon()
         polygon.process(self.xml_geometry)
         self.assertEqual(polygon.wkt_rings(), '(())')
 
@@ -145,10 +145,10 @@ class Polygon3DTestCase(unittest.TestCase):
         The geometry actually consists of an gml polygon element which includes
         an outer and inner ring.
         """
-        xml_file = open("test/pand.xml")
+        xml_file = open("data/pand.xml")
         root = ET.fromstring(xml_file.read())
         self.xml_geometry = find_xml_with_tag(root, "pandGeometrie", None)
-        self.polygon = gml.Polygon()
+        self.polygon = basis.test.gml.Polygon()
         self.polygon.process(self.xml_geometry)
         xml_file.close()        
 
