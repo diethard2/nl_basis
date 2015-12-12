@@ -19,4 +19,4 @@
 
 __author__ = 'Diethard Jansen'
 __date__ = 'December 2015'
-__copyright__ = '(C) 2015, GIS-hulp
+__copyright__ = '(C) 2015, GIS-hulp'
