@@ -36,8 +36,8 @@ from processing.core.outputs import OutputVector
 from processing.core.ProcessingLog import ProcessingLog
 #from processing.tools import dataobjects, vector
 
-import nl_basis.create_bag_db
-import nl_basis.fill_bag_db
+import nl_basis.core.create_bag_db
+import nl_basis.core.fill_bag_db
 import time
 
 class Bag_algorithm(GeoAlgorithm):
