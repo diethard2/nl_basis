@@ -35,7 +35,7 @@ class WoonplaatsTestCase(unittest.TestCase):
         The geometry actually consists of an gml polygon element which includes
         an outer and inner ring.
         """
-        xml_file = open("test/woonplaats.xml")
+        xml_file = open("test/data/woonplaats.xml")
         root = ET.fromstring(xml_file.read())
         xml_woonplaats = find_xml_with_tag(root, "Woonplaats", None)
         self.woonplaats = bag.woonplaats()
@@ -91,7 +91,7 @@ class WoonplaatsMultipolygonTestCase(unittest.TestCase):
         The geometry actually consists of two seperate gml polygon elements
         which the first polygon includes two inner rings.
         """
-        xml_file = open("test/woonplaats_multipolygon.xml")
+        xml_file = open("test/data/woonplaats_multipolygon.xml")
         root = ET.fromstring(xml_file.read())
         xml_woonplaats = find_xml_with_tag(root, "Woonplaats", None)
         self.woonplaats = bag.woonplaats()
@@ -136,7 +136,7 @@ class PandTestCase(unittest.TestCase):
         The geometry actually consists of an gml polygon element which includes
         an outer and inner ring.
         """
-        xml_file = open("test/pand.xml")
+        xml_file = open("test/data/pand.xml")
         root = ET.fromstring(xml_file.read())
         xml_pand = find_xml_with_tag(root, "Pand", None)
         self.pand = bag.pand()
@@ -191,7 +191,7 @@ class LigplaatsTestCase(unittest.TestCase):
         The geometry actually consists of an gml polygon element which includes
         an outer and inner ring.
         """
-        xml_file = open("test/ligplaats.xml")
+        xml_file = open("test/data/ligplaats.xml")
         root = ET.fromstring(xml_file.read())
         xml_ligplaats = find_xml_with_tag(root, "Ligplaats", None)
         self.ligplaats = bag.ligplaats()
@@ -256,7 +256,7 @@ class StandplaatsTestCase(unittest.TestCase):
         The geometry actually consists of an gml polygon element which includes
         an outer and inner ring.
         """
-        xml_file = open("test/standplaats.xml")
+        xml_file = open("test/data/standplaats.xml")
         root = ET.fromstring(xml_file.read())
         xml_standplaats = find_xml_with_tag(root, "Standplaats", None)
         self.standplaats = bag.standplaats()
@@ -309,7 +309,7 @@ class OpenbareRuimteTestCase(unittest.TestCase):
         The geometry actually consists of an gml polygon element which includes
         an outer and inner ring.
         """
-        xml_file = open("test/openbare_ruimte.xml")
+        xml_file = open("test/data/openbare_ruimte.xml")
         root = ET.fromstring(xml_file.read())
         xml_openbare_ruimte = find_xml_with_tag(root, "OpenbareRuimte", None)
         self.openbare_ruimte = bag.openbare_ruimte()
@@ -354,7 +354,7 @@ class NummeraanduidingTestCase(unittest.TestCase):
         The geometry actually consists of an gml polygon element which includes
         an outer and inner ring.
         """
-        xml_file = open("test/nummeraanduiding.xml")
+        xml_file = open("test/data/nummeraanduiding.xml")
         root = ET.fromstring(xml_file.read())
         xml_nummeraanduiding = find_xml_with_tag(root, "Nummeraanduiding", None)
         self.nummeraanduiding = bag.nummeraanduiding()
@@ -405,7 +405,7 @@ class WoonplaatsGemeenteTestCase(unittest.TestCase):
         The geometry actually consists of an gml polygon element which includes
         an outer and inner ring.
         """
-        xml_file = open("test/gemeentewoonplaatsrelatie.xml")
+        xml_file = open("test/data/gemeentewoonplaatsrelatie.xml")
         root = ET.fromstring(xml_file.read())
         xml_woonplaats_gemeente = find_xml_with_tag(root,
                                                     "GemeenteWoonplaatsRelatie",
@@ -451,7 +451,7 @@ class VerblijfsobjectTestCase(unittest.TestCase):
         The geometry actually consists of an gml polygon element which includes
         an outer and inner ring.
         """
-        xml_file = open("test/verblijfsobject.xml")
+        xml_file = open("test/data/verblijfsobject.xml")
         root = ET.fromstring(xml_file.read())
         xml_verblijfsobject = find_xml_with_tag(root, "Verblijfsobject", None)
         self.verblijfsobject = bag.verblijfsobject()

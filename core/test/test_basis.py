@@ -125,7 +125,7 @@ class B_ObjectTestCase(unittest.TestCase):
         woonplaats.add_tags_to_process()
         # to call from reader class (for each xml tag for this object
         # encountered.
-        xml_file = open("test/woonplaats.xml")
+        xml_file = open("test/data/woonplaats.xml")
         root = ET.fromstring(xml_file.read())
         xml_woonplaats = find_xml_with_tag(root, "Woonplaats", None)
         woonplaats.process(xml_woonplaats)
