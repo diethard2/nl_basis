@@ -31,7 +31,7 @@ class PointTestCase(unittest.TestCase):
         The geometry actually consists of an gml point element which includes
         an x, y and z coordinate.
         """
-        xml_file = open("data/verblijfsobject.xml")
+        xml_file = open("test/data/verblijfsobject.xml")
         root = ET.fromstring(xml_file.read())
         self.xml_geometry = find_xml_with_tag(root, "verblijfsobjectGeometrie", None)
         self.point = gml.Point()
@@ -62,7 +62,7 @@ class PolygonTestCase(unittest.TestCase):
         The geometry actually consists of an gml polygon element which includes
         an outer and inner ring.
         """
-        xml_file = open("data/woonplaats.xml")
+        xml_file = open("test/data/woonplaats.xml")
         root = ET.fromstring(xml_file.read())
         self.xml_geometry = find_xml_with_tag(root, "woonplaatsGeometrie", None)
         self.polygon = gml.Polygon()
@@ -107,7 +107,7 @@ class MultiPolygonTestCase(unittest.TestCase):
         The geometry actually consists of an gml polygon element which includes
         an outer and inner ring.
         """
-        xml_file = open("data/woonplaats_multipolygon.xml")
+        xml_file = open("test/data/woonplaats_multipolygon.xml")
         root = ET.fromstring(xml_file.read())
         self.xml_geometry = find_xml_with_tag(root, "woonplaatsGeometrie", None)
         self.multipolygon = gml.MultiPolygon()
@@ -145,7 +145,7 @@ class Polygon3DTestCase(unittest.TestCase):
         The geometry actually consists of an gml polygon element which includes
         an outer and inner ring.
         """
-        xml_file = open("data/pand.xml")
+        xml_file = open("test/data/pand.xml")
         root = ET.fromstring(xml_file.read())
         self.xml_geometry = find_xml_with_tag(root, "pandGeometrie", None)
         self.polygon = gml.Polygon()
