@@ -1,9 +1,9 @@
-DROP INDEX IF EXISTS idx_bag_verblijfsobject_id_pand
+DROP INDEX IF EXISTS idx_bag_verblijfsobject_id_pand;
 --
 CREATE INDEX idx_bag_verblijfsobject_id_pand
-ON bag_verblijfsobject (id_pand)
+ON bag_verblijfsobject (id_pand);
 --
-DROP VIEW if exists view_woonplaats
+DROP VIEW if exists view_woonplaats;
 --
 CREATE VIEW view_woonplaats AS
 SELECT wg.id_woonplaats AS id,
@@ -13,18 +13,18 @@ SELECT wg.id_woonplaats AS id,
     w.geometry AS geometry
 FROM woonplaats_gemeente AS wg
 LEFT JOIN bag_woonplaats AS w ON wg.id_woonplaats = w.id
-LEFT JOIN gemeente AS g ON wg.id_gemeente = g.gemeentecode
+LEFT JOIN gemeente AS g ON wg.id_gemeente = g.gemeentecode;
 --
 INSERT OR IGNORE INTO views_geometry_columns
     (view_name, view_geometry, view_rowid, f_table_name, f_geometry_column, read_only)
-  VALUES ('view_woonplaats', 'geometry', 'rowid', 'bag_woonplaats', 'geometry', 1)
+  VALUES ('view_woonplaats', 'geometry', 'rowid', 'bag_woonplaats', 'geometry', 1);
 ---
 DELETE
 FROM gemeente 
 WHERE naam NOT IN 
 (select distinct(gemeentenaam) from view_woonplaats);
 --
-DROP VIEW if exists view_adres
+DROP VIEW if exists view_adres;
 --
 CREATE VIEW view_adres AS
 SELECT n.id AS id,
@@ -35,9 +35,9 @@ SELECT n.id AS id,
     n.postcode AS postcode,
     o.id_woonplaats AS id_woonplaats      
 FROM nummeraanduiding AS n
-LEFT JOIN openbare_ruimte AS o ON n.id_openbare_ruimte = o.id
+LEFT JOIN openbare_ruimte AS o ON n.id_openbare_ruimte = o.id;
 --
-DROP VIEW if exists view_verblijfsobject
+DROP VIEW if exists view_verblijfsobject;
 --
 CREATE VIEW view_verblijfsobject AS
 SELECT v.id AS id,
@@ -55,13 +55,13 @@ SELECT v.id AS id,
        v.geometry as geometry
 FROM bag_verblijfsobject AS v
 LEFT JOIN view_adres AS a ON v.id_hoofdadres = a.id
-LEFT JOIN view_woonplaats AS w on a.id_woonplaats = w.id
+LEFT JOIN view_woonplaats AS w on a.id_woonplaats = w.id;
 --
 INSERT OR IGNORE INTO views_geometry_columns
     (view_name, view_geometry, view_rowid, f_table_name, f_geometry_column, read_only)
- VALUES ('view_verblijfsobject', 'geometry', 'rowid', 'bag_verblijfsobject', 'geometry', 1)
+ VALUES ('view_verblijfsobject', 'geometry', 'rowid', 'bag_verblijfsobject', 'geometry', 1);
 --
-DROP VIEW if exists view_ligplaats
+DROP VIEW if exists view_ligplaats;
 --
 CREATE VIEW view_ligplaats AS
 SELECT l.id AS id,
@@ -76,13 +76,13 @@ SELECT l.id AS id,
        l.geometry as geometry
 FROM bag_ligplaats as l
 LEFT JOIN view_adres AS a ON l.id_hoofdadres = a.id
-LEFT JOIN view_woonplaats AS w on a.id_woonplaats = w.id
+LEFT JOIN view_woonplaats AS w on a.id_woonplaats = w.id;
 --
 INSERT OR IGNORE INTO views_geometry_columns
     (view_name, view_geometry, view_rowid, f_table_name, f_geometry_column, read_only)
-VALUES ('view_ligplaats', 'geometry', 'rowid', 'bag_ligplaats', 'geometry', 1)
+VALUES ('view_ligplaats', 'geometry', 'rowid', 'bag_ligplaats', 'geometry', 1);
 --
-DROP VIEW if exists view_standplaats
+DROP VIEW if exists view_standplaats;
 --
 CREATE VIEW view_standplaats AS
 SELECT s.id AS id,
@@ -97,9 +97,9 @@ SELECT s.id AS id,
        s.geometry as geometry
 FROM bag_standplaats as s
 LEFT JOIN view_adres AS a ON s.id_hoofdadres = a.id
-LEFT JOIN view_woonplaats AS w on a.id_woonplaats = w.id
+LEFT JOIN view_woonplaats AS w on a.id_woonplaats = w.id;
 --
 INSERT OR IGNORE INTO views_geometry_columns
     (view_name, view_geometry, view_rowid, f_table_name, f_geometry_column, read_only)
-VALUES ('view_standplaats', 'geometry', 'rowid', 'bag_standplaats', 'geometry', 1)
+VALUES ('view_standplaats', 'geometry', 'rowid', 'bag_standplaats', 'geometry', 1);
 

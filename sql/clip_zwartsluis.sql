@@ -1,49 +1,49 @@
 DELETE from verblijfsobject
-WHERE MbrDisjoint(geometry, (select geometry from woonplaats where id='2201'))
+WHERE MbrDisjoint(geometry, (select geometry from woonplaats where id='2201'));
 --
 DELETE from pand
-WHERE MbrDisjoint(geometry, (select geometry from woonplaats where id='2201'))
+WHERE MbrDisjoint(geometry, (select geometry from woonplaats where id='2201'));
 --
 DELETE from ligplaats
-WHERE MbrDisjoint(geometry, (select geometry from woonplaats where id='2201'))
+WHERE MbrDisjoint(geometry, (select geometry from woonplaats where id='2201'));
 --
 DELETE from standplaats
-WHERE MbrDisjoint(geometry, (select geometry from woonplaats where id='2201'))
+WHERE MbrDisjoint(geometry, (select geometry from woonplaats where id='2201'));
 --
 DELETE from verblijfsobject
-WHERE Disjoint(geometry, (select geometry from woonplaats where id='2201'))
+WHERE Disjoint(geometry, (select geometry from woonplaats where id='2201'));
 --
 DELETE from pand
-WHERE Disjoint(geometry, (select geometry from woonplaats where id='2201'))
+WHERE Disjoint(geometry, (select geometry from woonplaats where id='2201'));
 --
 DELETE from ligplaats
-WHERE Disjoint(geometry, (select geometry from woonplaats where id='2201'))
+WHERE Disjoint(geometry, (select geometry from woonplaats where id='2201'));
 --
 DELETE from standplaats
-WHERE Disjoint(geometry, (select geometry from woonplaats where id='2201'))
+WHERE Disjoint(geometry, (select geometry from woonplaats where id='2201'));
 --
-select InvalidateLayerStatistics('ligplaats')
+select InvalidateLayerStatistics('ligplaats');
 --
-select InvalidateLayerStatistics('standplaats')
+select InvalidateLayerStatistics('standplaats');
 --
-select InvalidateLayerStatistics('pand')
+select InvalidateLayerStatistics('pand');
 --
-select InvalidateLayerStatistics('verblijfsobject')
+select InvalidateLayerStatistics('verblijfsobject');
 --
-select InvalidateLayerStatistics('verblijfsobject', 'geometry')
+select InvalidateLayerStatistics('verblijfsobject', 'geometry');
 --
-select InvalidateLayerStatistics('ligplaats', 'geometry')
+select InvalidateLayerStatistics('ligplaats', 'geometry');
 --
-select InvalidateLayerStatistics('standplaats', 'geometry')
+select InvalidateLayerStatistics('standplaats', 'geometry');
 --
-select InvalidateLayerStatistics('pand', 'geometry')
+select InvalidateLayerStatistics('pand', 'geometry');
 --
-select UpdateLayerStatistics('ligplaats')
+select UpdateLayerStatistics('ligplaats');
 --
-select UpdateLayerStatistics('standplaats')
+select UpdateLayerStatistics('standplaats');
 --
-select UpdateLayerStatistics('pand')
+select UpdateLayerStatistics('pand');
 --
-select UpdateLayerStatistics('verblijfsobject')
+select UpdateLayerStatistics('verblijfsobject');
 --
-vacuum
+vacuum;

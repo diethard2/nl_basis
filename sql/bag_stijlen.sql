@@ -1,4 +1,4 @@
-CREATE TABLE layer_styles(id INTEGER PRIMARY KEY AUTOINCREMENT,f_table_catalog varchar(256),f_table_schema varchar(256),f_table_name varchar(256),f_geometry_column varchar(256),styleName varchar(30),styleQML text,styleSLD text,useAsDefault boolean,description text,owner varchar(30),ui text,update_time timestamp DEFAULT CURRENT_TIMESTAMP)
+CREATE TABLE layer_styles(id INTEGER PRIMARY KEY AUTOINCREMENT,f_table_catalog varchar(256),f_table_schema varchar(256),f_table_name varchar(256),f_geometry_column varchar(256),styleName varchar(30),styleQML text,styleSLD text,useAsDefault boolean,description text,owner varchar(30),ui text,update_time timestamp DEFAULT CURRENT_TIMESTAMP);
 --
 INSERT INTO layer_styles VALUES(1,'C:/data/bag/bag.sqlite','','woonplaats','geometry','woonplaats','<!DOCTYPE qgis PUBLIC ''http://mrcc.com/qgis.dtd'' ''SYSTEM''>
 <qgis version="2.8.1-Wien" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
@@ -236,7 +236,7 @@ INSERT INTO layer_styles VALUES(1,'C:/data/bag/bag.sqlite','','woonplaats','geom
   </UserStyle>
  </NamedLayer>
 </StyledLayerDescriptor>
-',1,'za 28. nov 22:19:35 2015',NULL,NULL,'2015-11-28 21:19:35')
+',1,'za 28. nov 22:19:35 2015',NULL,NULL,'2015-11-28 21:19:35');
 --
 INSERT INTO layer_styles VALUES(2,'C:/data/bag/bag.sqlite','','standplaats','geometry','standplaats','<!DOCTYPE qgis PUBLIC ''http://mrcc.com/qgis.dtd'' ''SYSTEM''>
 <qgis version="2.8.1-Wien" minimumScale="0" maximumScale="5000" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
@@ -488,7 +488,7 @@ INSERT INTO layer_styles VALUES(2,'C:/data/bag/bag.sqlite','','standplaats','geo
   </UserStyle>
  </NamedLayer>
 </StyledLayerDescriptor>
-',1,'za 28. nov 22:20:04 2015',NULL,NULL,'2015-11-28 21:20:04')
+',1,'za 28. nov 22:20:04 2015',NULL,NULL,'2015-11-28 21:20:04');
 --
 INSERT INTO layer_styles VALUES(3,'C:/data/bag/bag.sqlite','','ligplaats','geometry','ligplaats','<!DOCTYPE qgis PUBLIC ''http://mrcc.com/qgis.dtd'' ''SYSTEM''>
 <qgis version="2.8.1-Wien" minimumScale="-4.65661e-10" maximumScale="5000" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
@@ -740,7 +740,7 @@ INSERT INTO layer_styles VALUES(3,'C:/data/bag/bag.sqlite','','ligplaats','geome
   </UserStyle>
  </NamedLayer>
 </StyledLayerDescriptor>
-',1,'za 28. nov 22:20:37 2015',NULL,NULL,'2015-11-28 21:20:37')
+',1,'za 28. nov 22:20:37 2015',NULL,NULL,'2015-11-28 21:20:37');
 --
 INSERT INTO layer_styles VALUES(4,'C:/data/bag/bag.sqlite','','pand','geometry','pand','<!DOCTYPE qgis PUBLIC ''http://mrcc.com/qgis.dtd'' ''SYSTEM''>
 <qgis version="2.8.1-Wien" minimumScale="-4.65661e-10" maximumScale="10000" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
@@ -977,7 +977,7 @@ INSERT INTO layer_styles VALUES(4,'C:/data/bag/bag.sqlite','','pand','geometry',
   </UserStyle>
  </NamedLayer>
 </StyledLayerDescriptor>
-',1,'za 28. nov 22:21:04 2015',NULL,NULL,'2015-11-28 21:21:04')
+',1,'za 28. nov 22:21:04 2015',NULL,NULL,'2015-11-28 21:21:04');
 --
 INSERT INTO layer_styles VALUES(5,'C:/data/bag/bag.sqlite','','verblijfsobject','geometry','verblijfsobject','<!DOCTYPE qgis PUBLIC ''http://mrcc.com/qgis.dtd'' ''SYSTEM''>
 <qgis version="2.8.1-Wien" minimumScale="0" maximumScale="3000" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">

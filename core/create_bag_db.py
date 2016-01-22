@@ -19,124 +19,61 @@ email                : diethard.jansen at gmail.com
  *                                                                         *
  ***************************************************************************/
 '''
-from pyspatialite import dbapi2
-import bag
+import spatialite_writer, bag
 from os import path
-##import my_resources
-
-def get_sql_statements(sql_file):
-    '''get_sql_statements(sql_file) --> list of sql statements
-
-    Reads sql statements from a file where these can be written over several
-    lines for good readability. A line is added between two statements using
-    "--". Unneccesary whitespace is removed.
-
-    >>> import my_resources
-    >>> sql_test_file = my_resources.sql_test_file
-    >>> sql_test_file
-    'test/test.sql'
-    >>> a_file = my_resources.my_resource_file(sql_test_file)
-    >>> statements = get_sql_statements(a_file)
-    >>> statements
-    ['CREATE TABLE person (name TEXT)', "INSERT INTO person VALUES ('Peter')"]
-    '''
-
-    # next insert the sql_statements to create joins and special indexes
-    sql_statements = []
-    sql_statement = ""
-    for line in open(sql_file):
-        if line.startswith("--"):
-            sql_statement = ' '.join(sql_statement.split())
-            sql_statements.append(sql_statement)
-            sql_statement = ""
-            continue
-        sql_statement += line
-    sql_statement = ' '.join(sql_statement.split())
-    sql_statements.append(sql_statement)
-    return sql_statements
 
 def create_db(new_file):
     '''create_db(new_file) --> new empty spatialite db
 
-    Creates a new spatialite database with provided filename.
+    Creates a new spatialite database with provided filename.'''
+    spatialite = spatialite_writer.Spatialite_writer(new_file)
+    spatialite.create()
 
-    >>> import my_resources
-    >>> my_test_db = my_resources.test_db
-    >>> my_test_db
-    'test/test.sqlite'
-    >>> test_db = my_resources.my_resource_file(my_test_db)
-    >>> create_db(test_db)
-    '''
-    conn = dbapi2.connect(new_file)
-    cur = conn.cursor()
-    sql_statements = {'SELECT InitSpatialMetadata()'}
-    for sql_statement in sql_statements:
-        rs = cur.execute(sql_statement)
-    rs = cur.execute(sql_statement)
-    conn.commit()
-    rs.close()
-    conn.close()
-
-def execute_sql(spatialite_db, sql_statements):
-    '''Opens a connection to spatialite database and
-    runs given sql_statements'''
-    conn = dbapi2.connect(spatialite_db)
-    cur = conn.cursor()
-    for sql_statement in sql_statements:
-        rs = cur.execute(sql_statement)
-    conn.commit()
-    rs.close()
-    conn.close()
- 
 def create_datamodel(spatialite_db):
     '''creates a new BAG datamodel in given spatialite_db
-    >>> import my_resources
-    >>> my_test_db = my_resources.test_db
-    >>> my_test_db
-    'test/test.sqlite'
-    >>> test_db = my_resources.my_resource_file(my_test_db)
-    >>> create_datamodel(test_db)
     '''
-    sql_file = path.join(path.dirname(__file__), '../sql/gemeente.sql')
+    spatialite = spatialite_writer.Spatialite_writer(spatialite_db)
     sql_statements = bag.sql_creation_statements()
-    sql_statements.extend(get_sql_statements(sql_file))
-    execute_sql(spatialite_db, sql_statements)
+    spatialite.add_sql_statements(sql_statements)
+    sql_file = path.join(path.dirname(__file__), '../sql/gemeente.sql')
+    spatialite.read_sql_file(sql_file)
+    spatialite.execute()
 
 def create_views(spatialite_db):
     '''create views to provide better access to information'''
     sql_file = path.join(path.dirname(__file__), '../sql/bag_views.sql')
-    sql_statements = get_sql_statements(sql_file)
-    execute_sql(spatialite_db, sql_statements)
+    spatialite = spatialite_writer.Spatialite_writer(spatialite_db)
+    spatialite.read_sql_file(sql_file)
+    spatialite.execute()
     
 def create_styles(spatialite_db):
     '''create styles used in qgis for tables'''
     sql_file = path.join(path.dirname(__file__), '../sql/bag_stijlen.sql')
-    sql_statements = get_sql_statements(sql_file)
+    spatialite = spatialite_writer.Spatialite_writer(spatialite_db)
+    spatialite.read_sql_file(sql_file)
     # replace in sql statement the path to choosen input folder, otherwise styles wil not work!
     new_dir = path.dirname(spatialite_db)
     cur_dir = 'C:/data/bag'
-    sql_statements = [sql_statement.replace(cur_dir, new_dir) for sql_statement in sql_statements]
-    execute_sql(spatialite_db, sql_statements)
+    spatialite.replace(cur_dir, new_dir)
+    spatialite.execute()
 
 def flatten_tables(spatialite_db):
     '''create flat tables from view for faster performance'''
     sql_file = path.join(path.dirname(__file__), '../sql/bag_flat_tables.sql')
-    sql_statements = get_sql_statements(sql_file)
-    execute_sql(spatialite_db, sql_statements)
+    spatialite = spatialite_writer.Spatialite_writer(spatialite_db)
+    spatialite.read_sql_file(sql_file)
+    spatialite.execute()
 
 def drop_tables(spatialite_db):
     '''remove tables that are not neccesary anymore'''
     sql_file = path.join(path.dirname(__file__), '../sql/bag_remove_tables.sql')
-    sql_statements = get_sql_statements(sql_file)
-    execute_sql(spatialite_db, sql_statements)
+    spatialite = spatialite_writer.Spatialite_writer(spatialite_db)
+    spatialite.read_sql_file(sql_file)
+    spatialite.execute()
 
 def clip_zwartsluis(spatialite_db):
     '''clip geodata from zwartsluis only'''
     sql_file = path.join(path.dirname(__file__), '../sql/clip_zwartsluis.sql')
-    sql_statements = get_sql_statements(sql_file)
-    execute_sql(spatialite_db, sql_statements)
-
-if __name__ == "__main__":
-    pass
-##    import doctest
-##    doctest.testmod()
+    spatialite = spatialite_writer.Spatialite_writer(spatialite_db)
+    spatialite.read_sql_file(sql_file)
+    spatialite.execute()

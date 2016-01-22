@@ -82,7 +82,7 @@ def create_styles():
     print "create_styles seconds used: " + str(time_end - time_start)
 
 def full_run():
-    create_db()
+    #create_db()
     time.sleep(5) # give spatialite time to finish properly
     create_datamodel()
     fill_db()
